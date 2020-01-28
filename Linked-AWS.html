@@ -1,25 +1,24 @@
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Linked Account Role Config
-		</title>
-		<link rel="icon" href="http://www.iconarchive.com/download/i87068/graphicloads/colorful-long-shadow/Cloud.ico" type="image/x-icon">
-	</head>
-	<body>
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
-		</script>
+  <head>
+    <meta charset="utf-8">
+    <title>Linked Account Role Config
+    </title>
+    <link rel="icon" href="http://www.iconarchive.com/download/i87068/graphicloads/colorful-long-shadow/Cloud.ico" type="image/x-icon">
+  </head>
+  <body>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
 
-    	<br>
-    	<div class="margin" id="margin">
-    	<h1>Creating CloudHealth Role & Policy</h1>
-    	<h2>Amazon Web Services (AWS) Linked Account</h2>
-    	<p>1) Access the AWS Account's <a href="https://apps.cloudhealthtech.com/aws_accounts" target="_blank">page</a> & click the <img src="https://awsmedia.s3.amazonaws.com/favicon.ico"> icon of the account you'd like to configure.
+      <br>
+      <div class="margin" id="margin">
+      <h1>Creating CloudHealth Role & Policy</h1>
+      <h2>Amazon Web Services (AWS) Linked Account</h2>
+      <p>1) Access the AWS Account's <a href="https://apps.cloudhealthtech.com/aws_accounts" target="_blank">page</a> & click the <img src="https://awsmedia.s3.amazonaws.com/favicon.ico"> icon of the account you'd like to configure.
 
-    	<br>
+      <br>
 
-    	<p>2) Copy the following IAM Access Policy:</p>
-    	<input type="text" value="
-
+      <p>2) Copy the following IAM Access Policy:</p>
+      <input type="text" value="
 {
   &quot;Version&quot;: &quot;2012-10-17&quot;,
   &quot;Statement&quot;: [
@@ -116,61 +115,60 @@
     }
   ]
 }
+  " id="myPolicy">
+    <button onclick="myFunction()">Copy</button>
 
-	" id="myPolicy">
-		<button onclick="myFunction()">Copy</button>
+    <script>
+      function myFunction() {
+          var copyText = document.getElementById("myPolicy");
+            copyText.select();
+            document.execCommand("copy");
+      }
+    </script>
+    <script>
+      const baseSwitcherUrl = "https://console.aws.amazon.com/iam/home#/roles$new?step=review&roleType=crossAccount&isThirdParty&accountID=454464851268";
+      const prefixExternalId = "&externalID=";
+      const prefixPolicyArn = "&policies=";
+      const prefixRoleName = "&roleName=CloudHealth_"
 
-		<script>
-			function myFunction() {
-  				var copyText = document.getElementById("myPolicy");
-  					copyText.select();
-  					document.execCommand("copy");
-			}
-		</script>
-		<script>
-			const baseSwitcherUrl = "https://console.aws.amazon.com/iam/home#/roles$new?step=review&roleType=crossAccount&isThirdParty&accountID=454464851268";
-			const prefixExternalId = "&externalID=";
-			const prefixPolicyArn = "&policies=";
-			const prefixRoleName = "&roleName=CloudHealth_"
+      $(function () {
+        $('#button').click(afterSearchClicked);
+      })
 
-			$(function () {
-			  $('#button').click(afterSearchClicked);
-			})
+      function afterSearchClicked() {
+        var externalId = $('#externalIdInput').val();
+        var accountName = $('#accountNameInput').val();
+        var policyArn = $('#policyArnInput').val();
+        window.open(baseSwitcherUrl + prefixExternalId + externalId + prefixPolicyArn + policyArn + prefixRoleName + accountName, "_blank");
+      }
+    </script>
 
-			function afterSearchClicked() {
-				var externalId = $('#externalIdInput').val();
-				var accountName = $('#accountNameInput').val();
-				var policyArn = $('#policyArnInput').val();
-				window.location.replace(baseSwitcherUrl + prefixExternalId + externalId + prefixPolicyArn + policyArn + prefixRoleName + accountName, "_blank");
-			}
-		</script>
+    <br>
 
-		<br>
+    <p>3) Paste into the JSON tab on this <a href="https://console.aws.amazon.com/iam/home?region=us-east-1#/policies$new?step=edit" target="_blank">page</a>
 
-		<p>3) Paste into the JSON tab on this <a href="https://console.aws.amazon.com/iam/home?region=us-east-1#/policies$new?step=edit" target="_blank">page</a>
+    <p>4) Click the <b>Review policy</b> & name it <b>CloudHealth</b></p>
 
-		<p>4) Click the <b>Review policy</b> & name it <b>CloudHealth</b></p>
+    <p>5) Click the <b>Create policy</b> button & click the newly created policy.<p>
 
-		<p>5) Click the <b>Create policy</b> button & click the newly created policy.<p>
-
-		<p>6) Copy & paste the <b>Policy ARN</b> & <b>Account Name</b> into the fields below.</p>
+    <p>6) Copy & paste the <b>Policy ARN</b> & <b>Account Name</b> into the fields below.</p>
 
         <div id="policyArn">
-        	<input type="text" id="policyArnInput" placeholder="Paste Policy ARN" reqired>
+          <input type="text" id="policyArnInput" placeholder="Paste Policy ARN" reqired>
         </div>
 
         <div id="accountName">
-        	<input type="text" id="accountNameInput" placeholder="Paste Account Name">
+          <input type="text" id="accountNameInput" placeholder="Paste Account Name">
         </div>
-		<p>7) In CloudHealth, click the edit icon next to the account you're configuring & paste the <b>External ID</b> below:</p>
-		<div id="externalId">
-        	<input type="text" id="externalIdInput" placeholder="Paste External ID" required>
+    <p>7) In CloudHealth, click the edit icon next to the account you're configuring & paste the <b>External ID</b> below:</p>
+    <div id="externalId">
+          <input type="text" id="externalIdInput" placeholder="Paste External ID" required>
         </div>
 
         <div id="button">
-        	<button type="button">Create Role
-        	</button>
-    	</div>
+          <button type="button">Create Role
+          </button>
+      </div>
     <p>8) Click the newly created role & copy/paste into the CloudHealth account under <b>Authentication Type: Role: Role ARN</b></p>
     </div>
 
@@ -244,5 +242,5 @@ a {
 }
 </style>
 
-	</body>
+  </body>
 </html>
