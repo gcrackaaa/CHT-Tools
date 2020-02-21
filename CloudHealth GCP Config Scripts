@@ -1,0 +1,173 @@
+	<html>
+	  <head>
+		<meta charset="utf-8">
+		<title>
+		  CloudHealth GCP Config Script Tool
+		</title>
+	  </head>
+	  <body>
+		  <br>
+		  <div class="margin" id="margin">
+		  <h1>CloudHealth GCP Config Script</h1>
+		  <h2>Script At Project Level:</h2>
+		  <p>
+			1) Fill in the below text boxes & click the "Generate Script" button:
+		  </p>
+		<div id="projId">
+		  <input type="text" id="projIdInput" placeholder="Paste Project ID" reqired>
+		</div>
+		<br />
+		<div id="bucketName">
+		  <input type="text" id="bucketNameInput" placeholder="Paste Bucket Name" required>
+		</div>
+		<br />
+		<div id="bucketId">
+		  <input type="text" id="bucketIdInput" placeholder="Paste Bucket ID" required>
+		</div>
+		<br />
+		<button onclick="generateProjScript()">Generate Script</button>
+
+		  <p>2) Click the "Copy" button & paste the script into the GCP CLI:</p>
+		  <input type="text" id="projScriptTextBox" required>
+		<button onclick="copyProjScript()">Copy</button>
+
+			<script>
+			const templateProjScript = '<insert project id>,<insert bucket name>,<insert bucket id>';
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateProjScript() {
+			  var projIdInput = document.getElementById("projIdInput").value;
+			  var bucketNameInput = document.getElementById("bucketNameInput").value;
+			  var bucketIdInput = document.getElementById("bucketIdInput").value;
+			  var generatedProjScript = templateProjScript.replace("<insert project id>",projIdInput).replace("<insert bucket name>",bucketNameInput).replace("<insert bucket id>",bucketIdInput);
+				document.getElementById("projScriptTextBox").value = generatedProjScript;
+			}
+
+			function copyProjScript() {
+			  var copyProjText = document.getElementById("projScriptTextBox");
+				copyProjText.select();
+				document.execCommand("copy");
+			  };
+			</script>
+			</div>
+			<br />
+			<div class="margin" id="margin">
+				<h2>Script At Org Level:</h2>
+				<p>1) Fill in the below text boxes & click the "Generate Script" button:</p>
+				<div id="orgId">
+					<input type="text" id="orgIdInput" placeholder="Paste Organization ID" reqired>
+				</div>
+				<br />
+				<div id="orgBucketName">
+					<input type="text" id="orgBucketNameInput" placeholder="Paste Bucket Name" required>
+				</div>
+				<br />
+				<div id="orgBucketId">
+					<input type="text" id="orgBucketIdInput" placeholder="Paste Bucket ID" required>
+				</div>
+				<br />
+				<button onclick="generateOrgScript()">Generate Script</button>
+				<p>2) Click the "Copy" button & paste the script into the GCP CLI:</p>
+				<input type="text" id="orgScriptTextBox" required>
+				<button onclick="copyOrgScript()">Copy</button>
+			<script>
+			const templateOrgScript = '<insert org id2>,<insert bucket name2>,<insert bucket id2>';
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateOrgScript() {
+			  var orgIdInput = document.getElementById("orgIdInput").value;
+			  var orgBucketNameInput = document.getElementById("orgBucketNameInput").value;
+			  var orgBucketIdInput = document.getElementById("orgBucketIdInput").value;
+			  var generatedOrgScript = templateOrgScript.replace("<insert org id2>",orgIdInput).replace("<insert bucket name2>",orgBucketNameInput).replace("<insert bucket id2>",orgBucketIdInput);
+				document.getElementById("orgScriptTextBox").value = generatedOrgScript;
+			}
+
+			function copyOrgScript() {
+			  var copyOrgText = document.getElementById("orgScriptTextBox");
+				copyOrgText.select();
+				document.execCommand("copy");
+			  };
+			</script>
+			</div>
+			<style>
+				#externalId {
+				  padding:7px;
+				  font-size: 14px;
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				}
+
+				#externalIdInput {
+				  font-size: 14px;
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				}
+
+				#accountName {
+				  padding:7px;
+				  font-size: 14px;
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				}
+
+				#accountNameInput {
+				  font-size: 14px;
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				}
+
+				#policyArn {
+				  padding:7px;
+				  font-size: 14px;
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				}
+
+				#policyArnInput {
+				  font-size: 14px;
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				}
+
+				#json {
+				  font-size: 14px;
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				}
+
+				#margin {
+				  margin-left: 20px;
+				}
+
+				h1 {
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				  font-size: 32px;
+				}
+
+				h2 {
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				  font-size: 21.6px;
+				  color: 0079B8;
+				}
+
+				p {
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				  font-size: 14px;
+				  color: 565656;
+				}
+
+				a {
+				  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+				  font-size: 14px;
+				  color: 0079B8;  
+				}
+			</style>
+		</body>
+	</html>
