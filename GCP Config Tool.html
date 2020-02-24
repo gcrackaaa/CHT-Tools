@@ -22,7 +22,7 @@
 		<div id="bucketId">
 		  <input type="text" id="bucketIdInput" placeholder="Paste Bucket ID" required>
 		</div>
-		<p>Would you like to enable BigQuery? <input type="checkbox" id="bqCheck"></p>
+		<p>Check box to enable BigQuery? <input type="checkbox" id="bqCheck"></p>
 		<button onclick="generateProjScript()">Generate Script</button>
 		  <p>Click the "Copy" button & paste the script into the GCP CLI:</p>
 		  <input type="text" id="projScriptTextBox" required>
@@ -136,7 +136,8 @@
 		  <p>Click the "Copy" button & paste the script into the GCP CLI:</p>
 		  <input type="text" id="legacyScriptTextBox" required>
 		<button onclick="copyLegacyScript()">Copy</button>
-
+			</script>
+			</div>
 			<script>
 			const templateLegacyScript = 'gsutil mb -c regional -l us-east1 -p <insert project id3> gs://<insert bucket name3>     gsutil iam ch serviceAccount:cloudhealthserviceaccount@<insert project id3>.iam.gserviceaccount.com:objectViewer gs://';
 
@@ -162,15 +163,6 @@
 				copyLegacyText.select();
 				document.execCommand("copy");
 			  };
-			</script>
-			</div>
-
-
-
-
-
-
-
 			</script>
 			</div>
 			<style>
