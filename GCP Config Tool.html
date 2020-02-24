@@ -10,9 +10,7 @@
 		  <div class="margin" id="margin">
 		  <h1>CloudHealth GCP Config Script</h1>
 		  <h2>Script At Project Level:</h2>
-		  <p>
-			1) Fill in the below text boxes & click the "Generate Script" button:
-		  </p>
+		  <p>Fill in the below text boxes & click the "Generate Script" button:</p>
 		<div id="projId">
 		  <input type="text" id="projIdInput" placeholder="Paste Project ID" reqired>
 		</div>
@@ -24,15 +22,15 @@
 		<div id="bucketId">
 		  <input type="text" id="bucketIdInput" placeholder="Paste Bucket ID" required>
 		</div>
-		<br />
+		<p>Would you like to enable BigQuery? <input type="checkbox" id="bqCheck"></p>
 		<button onclick="generateProjScript()">Generate Script</button>
-
-		  <p>2) Click the "Copy" button & paste the script into the GCP CLI:</p>
+		  <p>Click the "Copy" button & paste the script into the GCP CLI:</p>
 		  <input type="text" id="projScriptTextBox" required>
 		<button onclick="copyProjScript()">Copy</button>
 
 			<script>
-			const templateProjScript = '<insert project id>,<insert bucket name>,<insert bucket id>';
+			const templateProjScript = 'gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com storage-component.googleapis.com  --project <insert project id>     gcloud iam roles create cloudhealthcustomrole --project <insert project id> \     --title cloudhealthcustomrole --description \     "Used to collect CloudHealth Billing and Usage data" --permissions \     resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list \     --stage GA     gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id>     gcloud iam service-accounts keys create \     --iam-account cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com chtsakey.json     cloudshell download chtsakey.json     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role projects/<insert project id>/roles/cloudhealthcustomrole     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role roles/recommender.computeViewer     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role projects/<insert project id>/roles/cloudhealthcustomrole     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role roles/recommender.computeViewer     cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com';
+			const bqString = 'bq mk <insert project id>:billing'
 
 			function createNode(element) {
 			  return document.createElement(element);
@@ -46,7 +44,16 @@
 			  var projIdInput = document.getElementById("projIdInput").value;
 			  var bucketNameInput = document.getElementById("bucketNameInput").value;
 			  var bucketIdInput = document.getElementById("bucketIdInput").value;
-			  var generatedProjScript = templateProjScript.replace("<insert project id>",projIdInput).replace("<insert bucket name>",bucketNameInput).replace("<insert bucket id>",bucketIdInput);
+  			  var bqIncluded = document.getElementById("bqCheck").value;
+			  	if (bqCheck.checked == true){
+			    temp = bqString;
+			    } else {
+ 				    temp = "";
+  				};
+			  var generatedProjScript = templateProjScript
+			  	.replace(/<insert project id>/gi,projIdInput)
+			  	.replace(/<insert bucket name>/gi,bucketNameInput)
+			  	.replace(/<insert bucket id>/gi,bucketIdInput) + temp;
 				document.getElementById("projScriptTextBox").value = generatedProjScript;
 			}
 
@@ -60,9 +67,9 @@
 			<br />
 			<div class="margin" id="margin">
 				<h2>Script At Org Level:</h2>
-				<p>1) Fill in the below text boxes & click the "Generate Script" button:</p>
+				<p>Fill in the below text boxes & click the "Generate Script" button:</p>
 				<div id="orgId">
-					<input type="text" id="orgIdInput" placeholder="Paste Organization ID" reqired>
+					<input type="text" id="orgIdInput" placeholder="Paste Org ID" reqired>
 				</div>
 				<br />
 				<div id="orgBucketName">
@@ -73,12 +80,16 @@
 					<input type="text" id="orgBucketIdInput" placeholder="Paste Bucket ID" required>
 				</div>
 				<br />
+				<div id="orgProjId">
+					<input type="text" id="orgProjIdInput" placeholder="Paste Project ID" required>
+				</div>
+				<br />
 				<button onclick="generateOrgScript()">Generate Script</button>
-				<p>2) Click the "Copy" button & paste the script into the GCP CLI:</p>
+				<p>Click the "Copy" button & paste the script into the GCP CLI:</p>
 				<input type="text" id="orgScriptTextBox" required>
 				<button onclick="copyOrgScript()">Copy</button>
 			<script>
-			const templateOrgScript = '<insert org id2>,<insert bucket name2>,<insert bucket id2>';
+			const templateOrgScript = 'gcloud iam roles create cloudhealthcustomrole --organization <insert org id2> \     --title cloudhealthcustomrole --description \     "Used to collect CloudHealth Billing and Usage data" --permissions \     resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list,recommender.computeInstanceMachineTypeRecommendations.get,recommender.computeInstanceMachineTypeRecommendations.list,recommender.locations.get,recommender.locations.list \     --stage GA     gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id2>     gcloud iam service-accounts keys create \     --iam-account cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com chtsakey.json     cloudshell download chtsakey.json     gcloud projects add-iam-policy-binding <insert project id2> --member serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \     --role organizations/<insert org id2>/roles/cloudhealthcustomrole     gcloud organizations add-iam-policy-binding <insert org id2> --member user:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \     --role organizations/<insert org id2>/roles/cloudhealthcustomrole     gsutil mb -c regional -l us-east1 -p <insert project id2> gs://<insert bucket name2>     gsutil iam ch serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com:objectViewer gs://<insert bucket name2>     for project in $(gcloud projects list --format="value(projectId)")     do     echo "ProjectId: $project"     gcloud config set project $project     gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com recommender.googleapis.com storage-component.googleapis.com storage-api.googleapis.com --project $project done     bq mk <insert project id2>:billing';
 
 			function createNode(element) {
 			  return document.createElement(element);
@@ -92,7 +103,12 @@
 			  var orgIdInput = document.getElementById("orgIdInput").value;
 			  var orgBucketNameInput = document.getElementById("orgBucketNameInput").value;
 			  var orgBucketIdInput = document.getElementById("orgBucketIdInput").value;
-			  var generatedOrgScript = templateOrgScript.replace("<insert org id2>",orgIdInput).replace("<insert bucket name2>",orgBucketNameInput).replace("<insert bucket id2>",orgBucketIdInput);
+			  var orgProjIdInput = document.getElementById("orgProjIdInput").value;
+			  var generatedOrgScript = templateOrgScript
+			  	.replace(/<insert org id2>/gi,orgIdInput)
+			  	.replace(/<insert bucket name2>/gi,orgBucketNameInput)
+			  	.replace(/<insert bucket id2>/gi,orgBucketIdInput)
+			  	.replace(/<insert project id2>/gi,orgProjIdInput);
 				document.getElementById("orgScriptTextBox").value = generatedOrgScript;
 			}
 
@@ -101,6 +117,60 @@
 				copyOrgText.select();
 				document.execCommand("copy");
 			  };
+		</script>
+
+
+			<div>
+			<br />
+		  <h2>Bucket Configuration (Legacy Billing CSV)</h2>
+		  <p>Fill in the below text boxes & click the "Generate Script" button:</p>
+		<div id="projId">
+		  <input type="text" id="legacyProjIdInput" placeholder="Paste Project ID" reqired>
+		</div>
+		<br />
+		<div id="legacyBucketName">
+		  <input type="text" id="legacyBucketNameInput" placeholder="Paste Bucket Name" required>
+		</div>
+		<br />
+		<button onclick="generateLegacyScript()">Generate Script</button>
+		  <p>Click the "Copy" button & paste the script into the GCP CLI:</p>
+		  <input type="text" id="legacyScriptTextBox" required>
+		<button onclick="copyLegacyScript()">Copy</button>
+
+			<script>
+			const templateLegacyScript = 'gsutil mb -c regional -l us-east1 -p <insert project id3> gs://<insert bucket name3>     gsutil iam ch serviceAccount:cloudhealthserviceaccount@<insert project id3>.iam.gserviceaccount.com:objectViewer gs://';
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateLegacyScript() {
+			  var projIdInput = document.getElementById("legacyProjIdInput").value;
+			  var bucketNameInput = document.getElementById("legacyBucketNameInput").value;
+			  var generatedLegacyScript = templateLegacyScript
+			  	.replace(/<insert project id3>/gi,legacyProjIdInput)
+			  	.replace(/<insert bucket name3>/gi,legacyBucketNameInput);
+				document.getElementById("legacyScriptTextBox").value = generatedLegacyScript;
+			}
+
+			function copyLegacyScript() {
+			  var copyLegacyText = document.getElementById("legacyScriptTextBox");
+				copyLegacyText.select();
+				document.execCommand("copy");
+			  };
+			</script>
+			</div>
+
+
+
+
+
+
+
 			</script>
 			</div>
 			<style>
