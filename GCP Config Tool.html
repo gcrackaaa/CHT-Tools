@@ -88,14 +88,18 @@
 				<div id="orgProjId">
 					<input type="text" id="orgProjIdInput" placeholder="Paste Project ID" required>
 				</div>
+				<p>Check box to enable BigQuery? <input type="checkbox" id="bqOrgCheck"></p>
+				<div id="bqOrgId">
+				  <input type="text" id="bqOrgIdInput" placeholder="Paste BQ Proj ID" required>
+				</div>
 				<br />
 				<button onclick="generateOrgScript()">Generate Script</button>
 				<p>Click the "Copy" button & paste the script into the GCP CLI:</p>
 				<input type="text" id="orgScriptTextBox" required>
 				<button onclick="copyOrgScript()">Copy</button>
 			<script>
-			const templateOrgScript = 'gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com storage-component.googleapis.com  --project <insert project id> wait     gcloud iam roles create cloudhealthcustomrole --project <insert project id> \ --title cloudhealthcustomrole --description \ "Used to collect CloudHealth Billing and Usage data" --permissions \ resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list \ --stage GA wait     gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id> wait     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole wait     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer wait     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole wait     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer wait     ';
-			const bqStringTemplate = 'bq mk <insert project id2>:billing';
+			const templateOrgScript = 'gcloud iam roles create cloudhealthcustomrole --organization <insert org id2> \ --title cloudhealthcustomrole --description \ "Used to collect CloudHealth Billing and Usage data" --permissions \ resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list,recommender.computeInstanceMachineTypeRecommendations.get,recommender.computeInstanceMachineTypeRecommendations.list,recommender.locations.get,recommender.locations.list \ --stage GA wait     gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id2> wait     gcloud iam service-accounts keys create \ --iam-account cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com chtsakey.json wait     cloudshell download chtsakey.json wait     gcloud projects add-iam-policy-binding <insert project id2> --member serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \ --role organizations/<insert org id2>/roles/cloudhealthcustomrole wait     gcloud organizations add-iam-policy-binding <insert org id2> --member user:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \ --role organizations/<insert org id2>/roles/cloudhealthcustomrole wait     gsutil mb -c regional -l us-east1 -p <insert project id2> gs://<insert bucket name2> wait     gsutil iam ch serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com:objectViewer gs://<insert bucket name2> wait     for project in $(gcloud projects list --format="value(<insert project id2>)") do    echo "ProjectId: $project"    gcloud config set project $project    gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com recommender.googleapis.com storage-component.googleapis.com storage-api.googleapis.com --project $project done wait     ';
+			const bqOrgStringTemplate = 'bq mk <insert bq org project id>:billing';
 
 			function createNode(element) {
 			  return document.createElement(element);
@@ -110,11 +114,17 @@
 			  var orgBucketNameInput = document.getElementById("orgBucketNameInput").value;
 			  var orgBucketIdInput = document.getElementById("orgBucketIdInput").value;
 			  var orgProjIdInput = document.getElementById("orgProjIdInput").value;
+  			  var bqOrgInput = document.getElementById("bqOrgCheck").value;
+			  	if (bqOrgCheck.checked == true){
+			    bqOrgString = bqOrgStringTemplate;
+			    } else {
+ 				    bqOrgString = "";
+  				};
 			  var generatedOrgScript = templateOrgScript
 			  	.replace(/<insert org id2>/gi,orgIdInput)
 			  	.replace(/<insert bucket name2>/gi,orgBucketNameInput)
 			  	.replace(/<insert bucket id2>/gi,orgBucketIdInput)
-			  	.replace(/<insert project id2>/gi,orgProjIdInput);
+			  	.replace(/<insert project id2>/gi,orgProjIdInput) + bqOrgString.replace(/<insert bq org project id>/gi,bqOrgIdInput);
 				document.getElementById("orgScriptTextBox").value = generatedOrgScript;
 			}
 
