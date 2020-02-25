@@ -22,15 +22,19 @@
 		<div id="bucketId">
 		  <input type="text" id="bucketIdInput" placeholder="Paste Bucket ID" required>
 		</div>
-		<p>Check box to enable BigQuery? <input type="checkbox" id="bqCheck"></p>
+		<p>Check box to enable BigQuery? <input type="checkbox" id="bqProjCheck"></p>
+		<div id="bqProjId">
+		  <input type="text" id="bqProjIdInput" placeholder="Paste BQ Proj ID" required>
+		</div>
+		<br />
 		<button onclick="generateProjScript()">Generate Script</button>
 		  <p>Click the "Copy" button & paste the script into the GCP CLI:</p>
 		  <input type="text" id="projScriptTextBox" required>
 		<button onclick="copyProjScript()">Copy</button>
 
 			<script>
-			const templateProjScript = 'gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com storage-component.googleapis.com  --project <insert project id>     gcloud iam roles create cloudhealthcustomrole --project <insert project id> \     --title cloudhealthcustomrole --description \     "Used to collect CloudHealth Billing and Usage data" --permissions \     resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list \     --stage GA     gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id>     gcloud iam service-accounts keys create \     --iam-account cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com chtsakey.json     cloudshell download chtsakey.json     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role projects/<insert project id>/roles/cloudhealthcustomrole     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role roles/recommender.computeViewer     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role projects/<insert project id>/roles/cloudhealthcustomrole     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role roles/recommender.computeViewer     cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com';
-			const bqString = 'bq mk <insert project id>:billing'
+			const templateProjScript = 'gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com storage-component.googleapis.com  --project <insert project id>     gcloud iam roles create cloudhealthcustomrole --project <insert project id> \     --title cloudhealthcustomrole --description \     "Used to collect CloudHealth Billing and Usage data" --permissions \     resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list \     --stage GA wait    gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id> wait    gcloud iam service-accounts keys create \     --iam-account cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com chtsakey.json wait    cloudshell download chtsakey.json wait   gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role projects/<insert project id>/roles/cloudhealthcustomrole wait    gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role roles/recommender.computeViewer wait    gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role projects/<insert project id>/roles/cloudhealthcustomrole     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \     --role roles/recommender.computeViewer wait     ';
+			const bqStringTemplate = 'cloudhealthserviceaccount@<insert bq project id>.iam.gserviceaccount.com';
 
 			function createNode(element) {
 			  return document.createElement(element);
@@ -42,18 +46,19 @@
 
 			function generateProjScript() {
 			  var projIdInput = document.getElementById("projIdInput").value;
+			  var bqProjIdInput = document.getElementById("bqProjIdInput").value;
 			  var bucketNameInput = document.getElementById("bucketNameInput").value;
 			  var bucketIdInput = document.getElementById("bucketIdInput").value;
-  			  var bqIncluded = document.getElementById("bqCheck").value;
-			  	if (bqCheck.checked == true){
-			    temp = bqString;
+  			  var bqProjInput = document.getElementById("bqProjCheck").value;
+			  	if (bqProjCheck.checked == true){
+			    bqProjString = bqStringTemplate;
 			    } else {
- 				    temp = "";
+ 				    bqProjString = "";
   				};
 			  var generatedProjScript = templateProjScript
 			  	.replace(/<insert project id>/gi,projIdInput)
 			  	.replace(/<insert bucket name>/gi,bucketNameInput)
-			  	.replace(/<insert bucket id>/gi,bucketIdInput) + temp;
+			  	.replace(/<insert bucket id>/gi,bucketIdInput) + bqProjString.replace(/<insert bq project id>/gi,bqProjIdInput);
 				document.getElementById("projScriptTextBox").value = generatedProjScript;
 			}
 
@@ -89,7 +94,8 @@
 				<input type="text" id="orgScriptTextBox" required>
 				<button onclick="copyOrgScript()">Copy</button>
 			<script>
-			const templateOrgScript = 'gcloud iam roles create cloudhealthcustomrole --organization <insert org id2> \     --title cloudhealthcustomrole --description \     "Used to collect CloudHealth Billing and Usage data" --permissions \     resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list,recommender.computeInstanceMachineTypeRecommendations.get,recommender.computeInstanceMachineTypeRecommendations.list,recommender.locations.get,recommender.locations.list \     --stage GA     gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id2>     gcloud iam service-accounts keys create \     --iam-account cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com chtsakey.json     cloudshell download chtsakey.json     gcloud projects add-iam-policy-binding <insert project id2> --member serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \     --role organizations/<insert org id2>/roles/cloudhealthcustomrole     gcloud organizations add-iam-policy-binding <insert org id2> --member user:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \     --member serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com \     --role organizations/<insert org id2>/roles/cloudhealthcustomrole     gsutil mb -c regional -l us-east1 -p <insert project id2> gs://<insert bucket name2>     gsutil iam ch serviceAccount:cloudhealthserviceaccount@<insert project id2>.iam.gserviceaccount.com:objectViewer gs://<insert bucket name2>     for project in $(gcloud projects list --format="value(projectId)")     do     echo "ProjectId: $project"     gcloud config set project $project     gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com recommender.googleapis.com storage-component.googleapis.com storage-api.googleapis.com --project $project done     bq mk <insert project id2>:billing';
+			const templateOrgScript = 'gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com storage-component.googleapis.com  --project <insert project id> wait     gcloud iam roles create cloudhealthcustomrole --project <insert project id> \ --title cloudhealthcustomrole --description \ "Used to collect CloudHealth Billing and Usage data" --permissions \ resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list \ --stage GA wait     gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id> wait     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole wait     gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer wait     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole wait     gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer wait     ';
+			const bqStringTemplate = 'bq mk <insert project id2>:billing';
 
 			function createNode(element) {
 			  return document.createElement(element);
