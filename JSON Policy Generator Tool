@@ -32,7 +32,7 @@
             <option value="2">Tagging</option>
             <option value="3">Wasted Spend</option>
             <option value="4">Expiring Reservations/Modifications</option>
-            <option value="5" disabled="disabled">Account Status/Changes</option>
+            <option value="5">Account Status/Changes</option>
             <option value="6" disabled="disabled">Underutilized Resources</option>
             <option value="7" disabled="disabled">Cost Increase</option>
             <option value="8" disabled="disabled">Over Budget</option>
@@ -334,13 +334,12 @@
 		<p><input type="checkbox" id="chAscCheck">CloudHealth</p>
 		<p><input type="checkbox" id="agentAscCheck">Agents</p>
 
-		<button onclick="generateAcsConsoleScript()">Generate JSON</button>
+		<button onclick="generateAscConsoleScript()">Generate JSON</button>
 		<p>Click the "Copy" button & paste the into your browser's console:</p>
-		<input type="text" id="acsConsoleScriptTextBox" required>
-		<button onclick="copyAcsConsoleScript()">Copy</button>
+		<input type="text" id="ascConsoleScriptTextBox">
+		<button onclick="copyAscConsoleScript()">Copy</button>
 
 		<script>
-			const ascConsoleScript = 'var payload = `<ascPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'POST\', \'https://apps.cloudhealthtech.com/policies/new.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token); xhr.setRequestHeader(\'Host\', \'apps.cloudhealthtech.com\'); xhr.setRequestHeader(\'Origin\', \'https://apps.cloudhealthtech.com\'); xhr.send(payload); console.log(xhr.response);'
 			const ascConsoleScript = 'var payload = `<ascPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'POST\', \'https://apps.cloudhealthtech.com/policies/new.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token); xhr.setRequestHeader(\'Host\', \'apps.cloudhealthtech.com\'); xhr.setRequestHeader(\'Origin\', \'https://apps.cloudhealthtech.com\'); xhr.send(payload); console.log(xhr.response);'
 			const ascPayload = '{ "policy":{ "name":"Account Status","description":"Alerts on any Account/Agent/Aggregator with either Status/State not Healthy/Ok.","enabled":true,"version":2,"filters":{ },"policy_type":0,"evaluation_interval":{ "repeat":"daily","repeat_on_day":1,"repeat_weekdays":[ 1],"repeat_time":"6:00 AM -0500","repeat_hour_interval":4},"blocks":[<ascClouds>],"perspective":-1}}'
 			const awsAscJSON = '{ "name":"AWS Account","catchall":false,"enabled":true,"evaluation_interval":{ "repeat":"daily","repeat_on_day":1,"repeat_weekdays":[ 1],"repeat_time":"6:00 AM -0500","repeat_hour_interval":4},"documentation":"","conditions":{ },"filters":[ ],"groups":[ ],"scope":{ "name":null,"label":"<none>"},"rule_groups":[ { "name":"Rule Group 1","rules":[ { "name":"Status: Critical","enabled":true,"conditions":[ { "enabled":true,"measure":{ "id":"aws_account_status","label":"Status","source":"check","cube_id":null,"measure_id":null,"unit":"","periods":[ "instant"],"exclude_filters":null,"translated_description":null,"functions":null,"start_time":null},"topic":{ "id":"configuration","label":"Configuration","policy_type":null},"value":3,"time":"is","abs":"abs","direction":"more","tag_conditions":[ ],"runlist_conditions":[ ],"password_policy":{ },"duration":30,"interval":"days","filters":[ ]}],"level":10,"actions":[],"uuid":"e6ff9209-1b35-43da-be22-932782f819dd"},{ "name":"Status: Warning","enabled":true,"conditions":[ { "enabled":true,"measure":{ "id":"aws_account_status","label":"Status","source":"check","cube_id":null,"measure_id":null,"unit":"","periods":[ "instant"],"exclude_filters":null,"translated_description":null,"functions":null,"start_time":null},"topic":{ "id":"configuration","label":"Configuration","policy_type":null},"value":2,"time":"is","abs":"abs","direction":"more","tag_conditions":[ ],"runlist_conditions":[ ],"password_policy":{ },"duration":30,"interval":"days","filters":[ ]}],"level":20,"actions":[],"uuid":"a79a3fb3-82e4-43c3-8db7-97d32c0e3807"},{ "name":"Status: Pending","enabled":true,"conditions":[ { "enabled":true,"measure":{ "id":"aws_account_status","label":"Status","source":"check","cube_id":null,"measure_id":null,"unit":"","periods":[ "instant"],"exclude_filters":null,"translated_description":null,"functions":null,"start_time":null},"topic":{ "id":"configuration","label":"Configuration","policy_type":null},"value":6,"time":"is","abs":"abs","direction":"more","tag_conditions":[ ],"runlist_conditions":[ ],"password_policy":{ },"duration":30,"interval":"days","filters":[ ]}],"level":40,"actions":[],"uuid":"6266dfea-f605-4973-a139-aa7f531914bc"},{ "name":"Status: Unknown","enabled":true,"conditions":[ { "enabled":true,"measure":{ "id":"aws_account_status","label":"Status","source":"check","cube_id":null,"measure_id":null,"unit":"","periods":[ "instant"],"exclude_filters":null,"translated_description":null,"functions":null,"start_time":null},"topic":{ "id":"configuration","label":"Configuration","policy_type":null},"value":0,"time":"is","abs":"abs","direction":"more","tag_conditions":[ ],"runlist_conditions":[ ],"password_policy":{ },"duration":30,"interval":"days","filters":[ ]}],"level":40,"actions":[],"uuid":"d9b320dc-8437-4253-ac64-0524d378f8cd"},{ "name":"Status: Not Configured","enabled":true,"conditions":[ { "enabled":true,"measure":{ "id":"aws_account_status","label":"Status","source":"check","cube_id":null,"measure_id":null,"unit":"","periods":[ "instant"],"exclude_filters":null,"translated_description":null,"functions":null,"start_time":null},"topic":{ "id":"configuration","label":"Configuration","policy_type":null},"value":5,"time":"is","abs":"abs","direction":"more","tag_conditions":[ ],"runlist_conditions":[ ],"password_policy":{ },"duration":30,"interval":"days","filters":[ ]}],"level":40,"actions":[],"uuid":"7c7dad95-3f4d-4477-b9b3-257b55be03a3"}]}],"resource_type":"aws_account","clear_suppressions":false},{ "name":"AWS IAM Role","catchall":false,"enabled":true,"evaluation_interval":{ "repeat":"daily","repeat_on_day":1,"repeat_weekdays":[ 1],"repeat_time":"6:00 AM -0500","repeat_hour_interval":4},"documentation":"","conditions":{ },"filters":[ ],"groups":[ ],"scope":{ "name":null,"label":"<none>"},"rule_groups":[ { "name":"Rule Group 1","rules":[ { "name":"Role Created/Changed In Last Day","enabled":true,"conditions":[ { "enabled":true,"measure":{ "id":"aws_iam_role_changed","label":"IAM Role created or changed","source":"age","cube_id":null,"measure_id":null,"unit":"","periods":[ "instant"],"exclude_filters":null,"translated_description":null,"functions":null,"start_time":null},"topic":{ "id":"security","label":"Security","policy_type":null},"value":86400,"tag_conditions":[ ],"runlist_conditions":[ ],"password_policy":{ },"duration":1,"interval":"days","filters":[ ]}],"level":10,"actions":[],"uuid":"d517df2d-216e-4b36-81c0-38e1734da297"}]}],"resource_type":"aws_iam_role","clear_suppressions":false},{ "name":"AWS IAM Policy","catchall":false,"enabled":true,"evaluation_interval":{ "repeat":"daily","repeat_on_day":1,"repeat_weekdays":[ 1],"repeat_time":"6:00 AM -0500","repeat_hour_interval":4},"documentation":"","conditions":{ },"filters":[ ],"groups":[ ],"scope":{ "name":null,"label":"<none>"},"rule_groups":[ { "name":"Rule Group 1","rules":[ { "name":"Policy Created/Changed In Last Day","enabled":true,"conditions":[ { "enabled":true,"measure":{ "id":"aws_iam_policy_changed","label":"IAM Policy created or changed","source":"age","cube_id":null,"measure_id":null,"unit":"","periods":[ "instant"],"exclude_filters":null,"translated_description":null,"functions":null,"start_time":null},"topic":{ "id":"security","label":"Security","policy_type":null},"value":604800,"time":"is","abs":"abs","direction":"more","tag_conditions":[ ],"runlist_conditions":[ ],"password_policy":{ },"duration":1,"interval":"days","filters":[ ]}],"level":10,"actions":[],"uuid":"7f9f8ddd-6bed-402c-9aaa-f597e1c27a4b"}]}],"resource_type":"aws_iam_policy","clear_suppressions":false},'
@@ -358,53 +357,53 @@
 			  return parent.appendChild(el);
 			}
 
-			function generateAcsConsoleScript() {
-		  var awsAcsInput = document.getElementById("awsAcsCheck").value;
-		  	if (awsAcsCheck.checked == true){
-		    awsAcsString = awsAcsJSON;
-		    } else {
-				    awsAcsString = "";
-				};
-		  var azureAscInput = document.getElementById("azureAscCheck").value;
-		  	if (azureAscCheck.checked == true){
-		    azureAscString = azureAscJSON;
-		    } else {
-				    azureAcsString = "";
-				};
-		  var gcpAscCheckInput = document.getElementById("gcpAscCheckCheck").value;
-		  	if (gcpAscCheckCheck.checked == true){
-		    gcpAscCheckString = gcpAscCheckJSON;
-		    } else {
-				    gcpAcsString = "";
-				};
-		  var dcAscInput = document.getElementById("dcAscCheck").value;
-		  	if (dcAscCheck.checked == true){
-		    dcAscString = dcAscJSON;
-		    } else {
-				    dcAscString = "";
-				};
-		  var chAscInput = document.getElementById("chAscCheck").value;
-		  	if (chAscCheck.checked == true){
-		    chAscString = chAscJSON;
-		    } else {
-				    chAscString = "";
-				};
-		  var agentAscInput = document.getElementById("agentAscCheck").value;
-		  	if (agentAscCheck.checked == true){
-		    agentAscString = agentAscJSON;
-		    } else {
-				    agentAscString = "";
-				};
-		  var mergedAcsPayload = acsPayload.replace(/<acsClouds>/gi,awsAcsString + azureAcsString + gcpAcsString + dcAscString + chAscString + agentAscString);
-		  var mergedNcAcsPayload = mergedAcsPayload.replace(/,],\"/,"],\"");
-		  var generatedAcsConsoleScript = acsConsoleScript
-		  	.replace(/<acsPayload>/gi,mergedNcAcsPayload);
-			document.getElementById("acsConsoleScriptTextBox").value = generatedAcsConsoleScript;
-		}
+			function generateAscConsoleScript() {
+			  var awsAscInput = document.getElementById("awsAscCheck").value;
+			  	if (awsAscCheck.checked == true){
+			    awsAscString = awsAscJSON;
+			    } else {
+					    awsAscString = "";
+					};
+			  var azureAscInput = document.getElementById("azureAscCheck").value;
+			  	if (azureAscCheck.checked == true){
+			    azureAscString = azureAscJSON;
+			    } else {
+					    azureAscString = "";
+					};
+			  var gcpAscCheckInput = document.getElementById("gcpAscCheck").value;
+			  	if (gcpAscCheck.checked == true){
+			    gcpAscCheckString = gcpAscCheckJSON;
+			    } else {
+					    gcpAscString = "";
+					};
+			  var dcAscInput = document.getElementById("dcAscCheck").value;
+			  	if (dcAscCheck.checked == true){
+			    dcAscString = dcAscJSON;
+			    } else {
+					    dcAscString = "";
+					};
+			  var chAscInput = document.getElementById("chAscCheck").value;
+			  	if (chAscCheck.checked == true){
+			    chAscString = chAscJSON;
+			    } else {
+					    chAscString = "";
+					};
+			  var agentAscInput = document.getElementById("agentAscCheck").value;
+			  	if (agentAscCheck.checked == true){
+			    agentAscString = agentAscJSON;
+			    } else {
+					    agentAscString = "";
+					};
+			  var mergedAscPayload = ascPayload.replace(/<ascClouds>/gi,awsAscString + azureAscString + gcpAscString + dcAscString + chAscString + agentAscString);
+			  var mergedNcAscPayload = mergedAscPayload.replace(/,],\"/,"],\"");
+			  var generatedAscConsoleScript = ascConsoleScript
+			  	.replace(/<ascPayload>/gi,mergedNcAscPayload);
+				document.getElementById("ascConsoleScriptTextBox").value = generatedAscConsoleScript;
+			};
 
-			function copyAcsConsoleScript() {
-			  var copyAcsConsoleText = document.getElementById("acsConsoleScriptTextBox");
-				copyAcsConsoleText.select();
+			function copyAscConsoleScript() {
+			  var copyAscConsoleText = document.getElementById("ascConsoleScriptTextBox");
+				copyAscConsoleText.select();
 				document.execCommand("copy");
 			  };
 		</script>
