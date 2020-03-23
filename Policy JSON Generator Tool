@@ -36,7 +36,7 @@
             <option value="9" disabled="disabled">Over Budget</option>            
             <option value="10">Common Mining Instance Types</option>
             <option value="11">Instances In Unapproved Region</option>
-            <option value="11">Ian's Policy</option>
+            <option value="12">Ian's Policy</option>
 		</select>
 
 	<div id="div1">
