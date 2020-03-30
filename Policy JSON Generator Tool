@@ -1,11 +1,11 @@
 <head>
 	<meta charset="utf-8">
-	<title>JSON Policy Generator Tool</title>
+	<title>CHT JSON Policy Generator Tool</title>
 </head>
 <body>
 	<br>
 	<div id="scriptSelectionBar">
-		<h1>JSON Policy Generator Tool</h1>
+		<h1>CHT JSON Policy Generator Tool</h1>
 		<t>Select A Policy/Type:</t>
 	</div>
 	<script>
@@ -36,7 +36,6 @@
             <option value="9" disabled="disabled">Over Budget</option>            
             <option value="10">Common Mining Instance Types</option>
             <option value="11">Instances In Unapproved Region</option>
-            <option value="12">Ian's Policy</option>
             <option value="13" disabled="disabled">I Want It All!</option>
 		</select>
 
