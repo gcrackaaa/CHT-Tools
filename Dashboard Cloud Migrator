@@ -1,0 +1,169 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Dashboard Cloud Migrator Tool</title>
+	</head>
+<body>
+	<br>
+	<div id="header">
+		<h1>Dashboard Cloud Migrator Tool</h1>
+	</div>
+	<div id="div1">
+		<p>Paste JSON of dashboard you wish to copy below: </p>
+
+
+	<input type="text" id="oldDashboardTextBox" required="required">
+
+	<p>Paste Id of sacrificial dashboard below: </p>
+
+	<input type="text" id="dashboardIdTextBox" required>
+
+	<p> Select a desired cloud: </p>
+
+	<p><input type="checkbox" id="awsCheck"> AWS</p>
+	<p><input type="checkbox" id="azureCheck"> Azure</p>
+	<p><input type="checkbox" id="gcpCheck"> GCP</p>
+	<p><input type="checkbox" id="ociCheck"> Oracle</p>
+	<p><input type="checkbox" id="dcCheck"> Data Center</p>
+
+	<button onclick="generateDashboardConsoleScript()">Generate & Copy Modified JSON To Clipboard</button>
+	<input type="text" id="dashboardConsoleScriptTextBox" required>
+
+	<script>
+		const xhrScript = 'var payload = `<dashboardPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'PUT\', \'https://apps.cloudhealthtech.com/dashboards/<dashboardId>.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token); xhr.setRequestHeader(\'Host\', \'apps.cloudhealthtech.com\'); xhr.setRequestHeader(\'Origin\', \'https://apps.cloudhealthtech.com\'); xhr.send(payload); console.log(xhr.response);'
+		const awsScript = '"cloud":"aws"'
+		const azureScript = '"cloud":"azure"'
+		const gcpScript = '"cloud":"gcp"'
+		const ociScript = '"cloud":"oci"'
+		const dcScript = '"cloud":"datacenter"'
+
+		function createNode(element) {
+		  return document.createElement(element);
+		}
+
+		function append(parent, el) {
+		  return parent.appendChild(el);
+		}
+
+		function generateDashboardConsoleScript() {
+		  var awsInput = document.getElementById("awsCheck").value;
+		  	if (awsCheck.checked == true){
+		    awsString = awsScript;
+		    } else {
+				    awsString = "";
+				};
+		  var azureInput = document.getElementById("azureCheck").value;
+		  	if (azureCheck.checked == true){
+		    azureString = azureScript;
+		    } else {
+				    azureString = "";
+				};
+		  var gcpInput = document.getElementById("gcpCheck").value;
+		  	if (gcpCheck.checked == true){
+		    gcpString = gcpScript;
+		    } else {
+				    gcpString = "";
+				};
+		  var ociInput = document.getElementById("ociCheck").value;
+		  	if (ociCheck.checked == true){
+		    ociString = ociScript;
+		    } else {
+				    ociString = "";
+				};
+		  var dcInput = document.getElementById("dcCheck").value;
+		  	if (dcCheck.checked == true){
+		    dcString = dcScript;
+		    } else {
+				    dcString = "";
+				};
+
+		  var tempDashboardText = document.getElementById("oldDashboardTextBox").value.replace(/"cloud":"aws"/gi,"<cloud>");
+
+
+
+		  var modifiedXhrScript = xhrScript.replace(/<dashboardId>/gi,dashboardIdTextBox.value);
+
+		  var modifiedCloudScript = tempDashboardText.replace(/<cloud>/gi,awsString + azureString + gcpString + ociString + dcString);
+
+		  var newDashboardScript = modifiedXhrScript.replace(/<dashboardPayload>/gi,modifiedCloudScript)
+		  document.getElementById("dashboardConsoleScriptTextBox").value = newDashboardScript;
+				copyDashboardConsoleScript();
+		}
+
+			function copyDashboardConsoleScript() {
+			  var copyDashboardConsoleText = document.getElementById("dashboardConsoleScriptTextBox");
+				copyDashboardConsoleText.select();
+				document.execCommand("copy");
+			  };
+
+
+		</script>
+	</div>
+	<style>
+		#externalId {
+		  padding:7px;
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#externalIdInput {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#accountName {
+		  padding:7px;
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#accountNameInput {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#policyArn {
+		  padding:7px;
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#policyArnInput {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#json {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#margin, #header, #div1, #div2, #div3, #div4,#div5,#div6,#div7,#div8,#div9,#div10,#div11,#div12,#div13 {
+		  margin-left: 20px;
+		}
+
+		h1 {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 32px;
+		}
+
+		h2 {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 21.6px;
+		  color: 0079B8;
+		}
+
+		p, #header, #scriptType {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 14px;
+		  color: 565656;
+		}
+
+		a {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 14px;
+		  color: 0079B8;  
+		}
+
+	</style>
+</body>
