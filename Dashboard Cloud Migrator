@@ -8,6 +8,7 @@
 	<div id="header">
 		<h1>Dashboard Cloud Migrator Tool</h1>
 	</div>
+	<div id="div1">
 		<p>Paste JSON of dashboard you wish to copy below: </p>
 
 
@@ -33,15 +34,6 @@
 			divsO = document.getElementById("scriptTypeForm").getElementsByTagName('div');
 		}
 	</script>
-		<form action="#" method="post" id="scriptTypeForm">
-		<select id="scriptType" onchange="showModule(this)" style="margin: 20px">
-			<option value="">-- Select --</option>
-			<option value="1">AWS</option>
-            <option value="2">Azure</option>
-            <option value="3">GCP</option>
-            <option value="4">Oracle</option>
-            <option value="5">Data Center</option>
-		</select>
 
 	<p> Select a desired cloud: </p>
 
