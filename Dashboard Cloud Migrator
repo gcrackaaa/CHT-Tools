@@ -8,7 +8,6 @@
 	<div id="header">
 		<h1>Dashboard Cloud Migrator Tool</h1>
 	</div>
-	<div id="div1">
 		<p>Paste JSON of dashboard you wish to copy below: </p>
 
 
@@ -17,6 +16,32 @@
 	<p>Paste Id of sacrificial dashboard below: </p>
 
 	<input type="text" id="dashboardIdTextBox" required>
+
+	<t> Select dashboard's current cloud: </t>
+
+	<script>
+		function showModule(elem) {
+			if(elem.selectedIndex != 0) {
+			for(var i=0; i < divsO.length; i++) {
+				divsO[i].style.display = 'none';
+			}
+		document.getElementById('div'+elem.value).style.display = 'block';
+			}
+		}
+
+		window.onload=function() {
+			divsO = document.getElementById("scriptTypeForm").getElementsByTagName('div');
+		}
+	</script>
+		<form action="#" method="post" id="scriptTypeForm">
+		<select id="scriptType" onchange="showModule(this)" style="margin: 20px">
+			<option value="">-- Select --</option>
+			<option value="1">AWS</option>
+            <option value="2">Azure</option>
+            <option value="3">GCP</option>
+            <option value="4">Oracle</option>
+            <option value="5">Data Center</option>
+		</select>
 
 	<p> Select a desired cloud: </p>
 
@@ -79,16 +104,15 @@
 
 		  var tempDashboardText = document.getElementById("oldDashboardTextBox").value.replace(/"cloud":"aws"/gi,"<cloud>");
 
-
-
 		  var modifiedXhrScript = xhrScript.replace(/<dashboardId>/gi,dashboardIdTextBox.value);
 
 		  var modifiedCloudScript = tempDashboardText.replace(/<cloud>/gi,awsString + azureString + gcpString + ociString + dcString);
 
 		  var newDashboardScript = modifiedXhrScript.replace(/<dashboardPayload>/gi,modifiedCloudScript)
+
 		  document.getElementById("dashboardConsoleScriptTextBox").value = newDashboardScript;
 				copyDashboardConsoleScript();
-		}
+			}
 
 			function copyDashboardConsoleScript() {
 			  var copyDashboardConsoleText = document.getElementById("dashboardConsoleScriptTextBox");
