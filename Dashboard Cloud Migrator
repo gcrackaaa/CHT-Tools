@@ -46,7 +46,7 @@
 	<input type="text" id="dashboardConsoleScriptTextBox" required>
 
 	<script>
-		const xhrScript = 'var payload = `<dashboardPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'PUT\', \'https://apps.cloudhealthtech.com/dashboards/<dashboardId>.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token); xhr.setRequestHeader(\'Host\', \'apps.cloudhealthtech.com\'); xhr.setRequestHeader(\'Origin\', \'https://apps.cloudhealthtech.com\'); xhr.send(payload); console.log(xhr.response);'
+		const xhrScript = 'var payload = `<dashboardPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'PUT\', \'https://apps.cloudhealthtech.com/dashboards/<dashboardId>.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token); xhr.send(payload); console.log(xhr.response);'
 		const awsScript = '"cloud":"aws"'
 		const azureScript = '"cloud":"azure"'
 		const gcpScript = '"cloud":"gcp"'
