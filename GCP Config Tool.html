@@ -34,27 +34,18 @@
 		</select>
 
 	<div id="div1">
-		<h2>Script At Project Level:</h2>
-		<p>Fill in the below text boxes & click the "Generate Script" button:</p>
+		<h2>Script At Project Level: <a href="https://help.cloudhealthtech.com/administration/configuring-gcp-accounts-at-the-project-level-using-gcloud" target="_blank">(Help Doc)</a></h2>
+		<p>Paste Project ID in text box below & click "Generate & Copy To Clipboard" button:</p>
 
 		<input type="text" id="projIdInput" placeholder="Paste Project ID" reqired>
 
 		<br />
-
-		<p>Check box to enable BigQuery? <input type="checkbox" id="bqProjCheck"></p>
-
-		<input type="text" id="bqProjIdInput" placeholder="Paste BQ Proj ID">
-
 		<br />
-		<br />
-		<button onclick="generateProjScript()">Generate Script</button>
-		<p>Click the "Copy" button & paste the script into the GCP CLI:</p>
+		<button onclick="generateProjScript()">Generate & Copy To Clipboard</button>
 		<input type="text" id="projScriptTextBox" required>
-		<button onclick="copyProjScript()">Copy</button>
 
 		<script>
-		const templateProjScript = 'gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com storage-component.googleapis.com storage-api.googleapis.com recommender.googleapis.com bigquery.googleapis.com --project <insert project id> && gcloud iam roles create cloudhealthcustomrole2 --project <insert project id> \ --title cloudhealthcustomrole2 --description \ "Used to collect CloudHealth Billing and Usage data" --permissions \ resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list \ --stage GA && gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id> && gcloud iam service-accounts keys create \ --iam-account cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com chtsakey.json && cloudshell download chtsakey.json && gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole2 && gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer && gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole2 && gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer';
-		const bqStringTemplate = ' && cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com';
+		const templateProjScript = 'gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com storage-component.googleapis.com storage-api.googleapis.com recommender.googleapis.com bigquery.googleapis.com --project <insert project id> && gcloud iam roles create cloudhealthcustomrole --project <insert project id> \ --title cloudhealthcustomrole --description \ "Used to collect CloudHealth Billing and Usage data" --permissions \ resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list \ --stage GA && gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id> && gcloud iam service-accounts keys create \ --iam-account cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com chtsakey.json && cloudshell download chtsakey.json && gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole && gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer && gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role projects/<insert project id>/roles/cloudhealthcustomrole && gcloud projects add-iam-policy-binding <insert project id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \ --role roles/recommender.computeViewer && cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com';
 
 		function createNode(element) {
 		  return document.createElement(element);
@@ -66,17 +57,11 @@
 
 		function generateProjScript() {
 		  var projIdInput = document.getElementById("projIdInput").value;
-		  var bqProjIdInput = document.getElementById("bqProjIdInput").value;
-		  var bqProjInput = document.getElementById("bqProjCheck").value;
-		  	if (bqProjCheck.checked == true){
-		    bqProjString = bqStringTemplate;
-		    } else {
-				    bqProjString = "";
-				};
 		  var generatedProjScript = templateProjScript
-		  	.replace(/<insert project id>/gi,projIdInput) + bqProjString.replace(/<insert bq project id>/gi,bqProjIdInput);
+		  	.replace(/<insert project id>/gi,projIdInput);
 			document.getElementById("projScriptTextBox").value = generatedProjScript;
-		}
+			copyProjScript();
+		};
 
 		function copyProjScript() {
 		  var copyProjText = document.getElementById("projScriptTextBox");
