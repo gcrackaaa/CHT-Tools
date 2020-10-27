@@ -107,12 +107,12 @@
 --title cloudhealthcustomrole2 --description \
 "Used to collect CloudHealth Billing and Usage data" --permissions \
 resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images.get,compute.images.list,compute.instances.get,compute.instances.list,compute.projects.get,compute.regions.get,compute.regions.list,storage.buckets.list,bigquery.datasets.get,bigquery.jobs.create,dataproc.clusters.list,compute.addresses.list,container.clusters.list,bigquery.tables.get,bigquery.tables.getData,compute.snapshots.get,compute.snapshots.list,compute.zones.get,compute.zones.list,recommender.computeInstanceMachineTypeRecommendations.get,recommender.computeInstanceMachineTypeRecommendations.list,recommender.locations.get,recommender.locations.list \
---stage GA && gcloud iam service-accounts create cloudhealthserviceaccount --project <insert project id> && gcloud iam service-accounts keys create \
---iam-account cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com chtsakey.json && cloudshell download chtsakey.json && gcloud projects add-iam-policy-binding <insert project id> --member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \
---role organizations/<insert org id>/roles/cloudhealthcustomrole2 && gcloud organizations add-iam-policy-binding <insert org id> --member user:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \
---member serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com \
---role organizations/<insert org id>/roles/cloudhealthcustomrole2 && gsutil mb -c regional -l us-east1 -p <insert project id> gs://<insert bucket name> && gsutil iam ch serviceAccount:cloudhealthserviceaccount@<insert project id>.iam.gserviceaccount.com:objectViewer gs://<insert bucket name> && for project in $(gcloud projects list --format="value(projectId)") do echo "ProjectId: $project" gcloud config set project $project gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com recommender.googleapis.com storage-component.googleapis.com storage-api.googleapis.com --project $project done';
-			const bqOrgStringTemplate = ' && bq mk <insert bq org project id>:billing';
+--stage GA && gcloud iam service-accounts create cloudhealthserviceaccount --project <insert org project id> && gcloud iam service-accounts keys create \
+--iam-account cloudhealthserviceaccount@<insert org project id>.iam.gserviceaccount.com chtsakey.json && cloudshell download chtsakey.json && gcloud projects add-iam-policy-binding <insert org project id> --member serviceAccount:cloudhealthserviceaccount@<insert org project id>.iam.gserviceaccount.com \
+--role organizations/<insert org id>/roles/cloudhealthcustomrole2 && gcloud organizations add-iam-policy-binding <insert org id> --member user:cloudhealthserviceaccount@<insert org project id>.iam.gserviceaccount.com \
+--member serviceAccount:cloudhealthserviceaccount@<insert org project id>.iam.gserviceaccount.com \
+--role organizations/<insert org id>/roles/cloudhealthcustomrole2 && gsutil mb -c regional -l us-east1 -p <insert org project id> gs://<insert bucket name> && gsutil iam ch serviceAccount:cloudhealthserviceaccount@<insert org project id>.iam.gserviceaccount.com:objectViewer gs://<insert bucket name> && for project in $(gcloud projects list --format="value(projectId)") do echo "ProjectId: $project" gcloud config set project $project gcloud services enable cloudbilling.googleapis.com compute.googleapis.com cloudresourcemanager.googleapis.com recommender.googleapis.com storage-component.googleapis.com storage-api.googleapis.com --project $project done';
+			const bqOrgStringTemplate = ' && bq mk <insert bq project id>:billing';
 
 			function createNode(element) {
 			  return document.createElement(element);
@@ -135,10 +135,10 @@ resourcemanager.projects.get,compute.disks.get,compute.disks.list,compute.images
  				    bqOrgString = "";
   				};
 			  var generatedOrgScript = templateOrgScript
-			  	.replace(/<insert org id2>/gi,orgIdInput)
-			  	.replace(/<insert bucket name2>/gi,orgBucketNameInput)
-			  	.replace(/<insert bucket id2>/gi,orgBucketIdInput)
-			  	.replace(/<insert project id2>/gi,orgProjIdInput) + bqOrgString.replace(/<insert bq org project id>/gi,bqOrgIdInput);
+			  	.replace(/<insert org id>/gi,orgIdInput)
+			  	.replace(/<insert bucket name>/gi,orgBucketNameInput)
+			  	.replace(/<insert bucket id>/gi,orgBucketIdInput)
+			  	.replace(/<insert org project id>/gi,orgProjIdInput) + bqOrgString.replace(/<insert bq project id>/gi,bqOrgIdInput);
 				document.getElementById("orgScriptTextBox").value = generatedOrgScript;
 			}
 
