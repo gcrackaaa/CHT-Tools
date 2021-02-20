@@ -1,0 +1,142 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Policy Block Replicator/Injector Tool</title>
+	</head>
+<body>
+	<br>
+	<div id="header">
+		<h1>Policy Block Replicator/Injector Tool</h1>
+	</div>
+	<div id="div1">
+		<p>Paste JSON of Policy you wish to modify below: </p>
+
+		<input type="text" id="originalPolicyTextBox">
+
+		<p>Paste JSON of Block you wish to replicate below: </p>
+
+		<input type="text" id="policyBlockTextBox" required="required">
+
+		<p>Enter the number of times you wish to replicate block: </p>
+
+		<input type="text" id="policyNumTextBox" required="required"><br><br>
+
+	<script>
+		function showModule(elem) {
+			if(elem.selectedIndex != 0) {
+			for(var i=0; i < divsO.length; i++) {
+				divsO[i].style.display = 'none';
+			}
+		document.getElementById('div'+elem.value).style.display = 'block';
+			}
+		}
+
+		window.onload=function() {
+			divsO = document.getElementById("scriptTypeForm").getElementsByTagName('div');
+		}
+	</script>
+
+	<button onclick="generatePolicyConsoleScript()">Generate & Copy Modified JSON To Clipboard</button>
+	<input type="text" id="policyConsoleScriptTextBox" required>
+
+	<script>
+		const xhrScript = 'var payload = `<policyPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'POST\', \'https://apps.cloudhealthtech.com/policy/new.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token); xhr.send(payload); console.log(xhr.response);'
+
+		function createNode(element) {
+		  return document.createElement(element);
+		}
+
+		function append(parent, el) {
+		  return parent.appendChild(el);
+		}
+
+		function generatePolicyConsoleScript() {
+
+//Need to loop specified JSON input policyNumTextBox # of times
+		  var tempPolicyText = "," + document.getElementById("policyBlockTextBox").value;
+
+		  var newPolicyText = tempPolicyText.repeat(policyNumTextBox.value);
+
+		  var finalPolicyText = document.getElementById("originalPolicyTextBox").value.replace('],"perspective',newPolicyText + '],"perspective');
+
+		  document.getElementById("policyConsoleScriptTextBox").value = finalPolicyText;
+				copyPolicyConsoleScript();
+			}
+
+			function copyPolicyConsoleScript() {
+			  var copyPolicyConsoleText = document.getElementById("policyConsoleScriptTextBox");
+				copyPolicyConsoleText.select();
+				document.execCommand("copy");
+			  };
+
+
+		</script>
+	</div>
+	<style>
+		#externalId {
+		  padding:7px;
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#externalIdInput {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#accountName {
+		  padding:7px;
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#accountNameInput {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#policyArn {
+		  padding:7px;
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#policyArnInput {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#json {
+		  font-size: 14px;
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		}
+
+		#margin, #header, #div1, #div2, #div3, #div4,#div5,#div6,#div7,#div8,#div9,#div10,#div11,#div12,#div13 {
+		  margin-left: 20px;
+		}
+
+		h1 {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 32px;
+		}
+
+		h2 {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 21.6px;
+		  color: 0079B8;
+		}
+
+		p, #header, #scriptType {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 14px;
+		  color: 565656;
+		}
+
+		a {
+		  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+		  font-size: 14px;
+		  color: 0079B8;  
+		}
+
+	</style>
+</body>
