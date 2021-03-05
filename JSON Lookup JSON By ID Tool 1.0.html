@@ -1,0 +1,439 @@
+<head>
+	<meta charset="utf-8">
+	<title>Lookup JSON By ID Tool</title>
+</head>
+<body>
+	<br>
+	<div id="jsonSelectionBar">
+		<h1>Lookup JSON By ID Tool</h1>
+		<h2>Select A Json Type To Lookup:</h2>
+	</div>
+	<form action="#" method="post" id="jsonTypeForm">
+
+		<select id="scriptType" onselect="generateJsonScript()">
+			<option value="">-- Select --</option>
+			<option id="actionSelect">Actions</option>
+			<option id="actionIdSelect">Action (ID)</option>
+			<option id="agentStatSelect">Agent Stats</option>
+			<option id="agentStatIdSelect">Agent Stat (ID)</option>
+			<option id="aggregatorSelect">Aggregators</option>
+			<option id="aggregatorIdSelect">Aggregator (ID)</option>
+			<option id="awsAccountSelect">AWS Accounts</option>
+			<option id="awsAccountIdSelect">AWS Account (ID)</option>
+			<option id="azureEnrollmentSelect">Azure Enrollments</option>
+			<option id="azureEnrollmentIdSelect">Azure Enrollment (ID)</option>
+			<option id="azureServicePrincipalSelect">Azure Service Principals</option>
+			<option id="azureServicePrincipalIdSelect">Azure Service Principal (ID)</option>
+			<option id="azureSubscriptionSelect">Azure Subscriptions</option>
+			<option id="containerClusterSelect">Container Clusters</option>
+			<option id="customerSelect">Customers</option>
+			<option id="customerIdSelect">Customer (ID)</option>
+			<option id="customReportSelect">Custom Reports</option>
+			<option id="dashboardSelect">Dashboard (ID)</option>
+			<option id="dataCenterSelect">Data Center Accounts</option>
+			<option id="gcpBillingAccountSelect">GCP Billing Accounts</option>
+			<option id="gcpBillingAccountIdSelect">GCP Billing Account (ID)</option>
+			<option id="gcpComputeProjectsSelect">GCP Compute Projects</option>
+			<option id="gcpComputeProjectsIdSelect">GCP Compute Project (ID)</option>
+			<option id="ociTenanciesSelect">OCI Tenancies</option>
+			<option id="ociTenanciesIdSelect">OCI Tenancy (ID)</option>
+			<option id="organizationSelect">Organizations List</option>
+			<option id="perspectiveSelect">Perspectives List</option>
+			<option id="perspectiveIdSelect">Perspective (ID)></option>
+			<option id="policySelect">Policies List</option>
+			<option id="policyIdSelect">Policy (ID)</option>
+			<option id="roleSelect">Roles List</option>
+			<option id="roleIdSelect">Role (ID)</option>
+			<option id="userSelect">Users List</option>
+			<option id="vmcCspOrganizationSelect">VMC CSP Organizations List</option>
+			<option id="vmcCspOrganizationIdSelect">VMC CSP Organization (ID)</option>
+			<option id="vmcVCenterSelect">VMC vCenters List</option>
+
+
+
+
+
+
+
+
+
+		</select>
+</form>		
+	<div id="div1">
+		<p id="json">Paste Id of JSON you're looking to copy:</p>
+		<input type="text" id="jsonIdTextBox" required><br><br>
+			<script>
+		function showModule(elem) {
+			if(elem.selectedIndex != 0) {
+			for(var i=0; i < divsO.length; i++) {
+				divsO[i].style.display = 'none';
+			}
+		document.getElementById('div'+elem.value).style.display = 'block';
+			}
+		}
+
+		window.onload=function() {
+			divsO = document.getElementById("scriptTypeForm").getElementsByTagName('div');
+		}
+	</script>
+		<button onclick="generateJsonScript()">Generate & Copy</button>
+		<input type="text" id="jsonScriptTextBox">
+		<p id="success"> Successfully copied to your clipboard.</p>
+		<script>
+			const consoleScript = 'var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content");  var xhr = new XMLHttpRequest();  xhr.open(\'GET\', \'https://apps.cloudhealthtech.com/<jsonUrl>\', false);  xhr.setRequestHeader(\'Content-Type\', \'application/json\');  xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\');  xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token);  xhr.send();  console.log(xhr.response);'
+			const actionLink = 'v1/actions/action_configs.json'
+			const actionIdLink = 'v1/actions/action_configs/<Id>.json'
+			const agentStatLink = 'agent_stats.json'
+			const agentStatIdLink = 'agent_stats/<Id>.json'
+			const aggregatorLink = 'aggregators.json'
+			const aggregatorIdLink = 'aggregators/<Id>.json'
+			const awsAccountLink = 'aws_accounts.json'
+			const awsAccountIdLink = 'aws_accounts/<Id>.json'
+			const azureEnrollmentLink = 'azure_enrollments.json'
+			const azureEnrollmentIdLink = 'azure_enrollments/<Id>.json'
+			const azureServicePrincipalLink = 'azure_service_principals.json'
+			const azureServicePrincipalIDLink = 'azure_service_principals/<Id>.json'
+			const azureSubscriptionLink = 'assets/azure/subscriptions.json'
+			const containerClusterLink = 'containers_clusters.json'
+			const customerLink = 'customers.json'
+			const customerIdLink = 'customers/<Id>.json'
+			const customReportLink = 'reports/custom.json'			
+			const dashboardLink = 'dashboards/<Id>.json'
+			const dataCenterLink = 'data_center_accounts.json'
+			const gcpBillingAccountLink = 'gcp_billing_accounts.json'
+			const gcpBillingAccountIdLink = 'gcp_billing_accounts/<Id>.json'
+			const gcpComputeProjectsLink = 'gcp_compute_projects.json'
+			const gcpComputeProjectsIdLink = 'gcp_compute_projects/<Id>.json'
+			const ociTenanciesLink = 'oci_tenancies.json'
+			const ociTenanciesIdLink = 'oci_tenancies/<Id>.json'
+			const organizationLink = 'organizations.json'
+			const perspectiveLink = 'v1/perspective_schemas.json'
+			const perspectiveIdLink = 'v1/perspective_schemas/<Id>.json'
+			const policyLink = 'policies.json'
+			const policyIdLink = 'policies/<Id>.json'
+			const roleLink = 'roles.json'
+			const roleIdLink = 'roles/<Id>.json'
+			const userLink = 'users.json'
+			const vmcCspOrganizationLink = 'vmware_csp_organizations.json'
+			const vmcCspOrganizationIdLink = 'vmware_csp_organizations/<Id>.json'
+			const vmcVCenterLink = 'vmc_vcenters.json'
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateJsonScript() {
+			  var actionInput = document.getElementById("actionSelect").value;
+			  	if (actionSelect.selected == true){
+			    actionString = actionLink;
+			    } else {
+					    actionString = "";
+					};
+			  var actionIdInput = document.getElementById("actionIdSelect").value;
+			  	if (actionIdSelect.selected == true){
+			    actionIdString = actionIdLink;
+			    } else {
+					    actionIdString = "";
+					};
+			  var agentStatInput = document.getElementById("agentStatSelect").value;
+			  	if (agentStatSelect.selected == true){
+			    agentStatString = agentStatLink;
+			    } else {
+					    agentStatString = "";
+					};
+			  var agentStatIdInput = document.getElementById("agentStatIdSelect").value;
+			  	if (agentStatIdSelect.selected == true){
+			    agentStatIdString = agentStatIdLink;
+			    } else {
+					    agentStatIdString = "";
+					};
+			  var aggregatorInput = document.getElementById("aggregatorSelect").value;
+			  	if (aggregatorSelect.selected == true){
+			    aggregatorString = aggregatorLink;
+			    } else {
+					    aggregatorString = "";
+					};
+			  var aggregatorIdInput = document.getElementById("aggregatorIdSelect").value;
+			  	if (aggregatorIdSelect.selected == true){
+			    aggregatorIdString = aggregatorIdLink;
+			    } else {
+					    aggregatorIdString = "";
+					};
+			  var awsAccountInput = document.getElementById("awsAccountSelect").value;
+			  	if (awsAccountSelect.selected == true){
+			    awsAccountString = awsAccountLink;
+			    } else {
+					    awsAccountString = "";
+					};
+			  var awsAccountIdInput = document.getElementById("awsAccountIdSelect").value;
+			  	if (awsAccountIdSelect.selected == true){
+			    awsAccountIdString = awsAccountIdLink;
+			    } else {
+					    awsAccountIdString = "";
+					};
+			  var azureEnrollmentInput = document.getElementById("azureEnrollmentSelect").value;
+			  	if (azureEnrollmentSelect.selected == true){
+			    azureEnrollmentString = azureEnrollmentLink;
+			    } else {
+					    azureEnrollmentString = "";
+					};
+			  var azureEnrollmentIdInput = document.getElementById("azureEnrollmentIdSelect").value;
+			  	if (azureEnrollmentIdSelect.selected == true){
+			    azureEnrollmentIdString = azureEnrollmentIdLink;
+			    } else {
+					    azureEnrollmentIdString = "";
+					};
+			  var azureServicePrincipalInput = document.getElementById("azureServicePrincipalSelect").value;
+			  	if (azureServicePrincipalSelect.selected == true){
+			    azureServicePrincipalString = azureServicePrincipalLink;
+			    } else {
+					    azureServicePrincipalString = "";
+					};
+			  var azureServicePrincipalIdInput = document.getElementById("azureServicePrincipalIdSelect").value;
+			  	if (azureServicePrincipalIdSelect.selected == true){
+			    azureServicePrincipalIdString = azureServicePrincipalIdLink;
+			    } else {
+					    azureServicePrincipalIdString = "";
+					};
+			  var azureSubscriptionInput = document.getElementById("azureSubscriptionSelect").value;
+			  	if (azureSubscriptionSelect.selected == true){
+			    azureSubscriptionString = azureSubscriptionLink;
+			    } else {
+					    azureSubscriptionString = "";
+					};
+			  var containerClusterInput = document.getElementById("containerClusterSelect").value;
+			  	if (containerClusterSelect.selected == true){
+			    containerClusterString = containerClusterLink;
+			    } else {
+					    containerClusterString = "";
+					};
+			  var customerInput = document.getElementById("customerSelect").value;
+			  	if (customerSelect.selected == true){
+			    customerString = customerLink;
+			    } else {
+					    customerString = "";
+					};
+			  var customerIdInput = document.getElementById("customerIdSelect").value;
+			  	if (customerIdSelect.selected == true){
+			    customerIdString = customerIdLink;
+			    } else {
+					    customerIdString = "";
+					};
+			  var customReportInput = document.getElementById("customReportSelect").value;
+			  	if (customReportSelect.selected == true){
+			    customReportString = customReportLink;
+			    } else {
+					    customReportString = "";
+					};
+			  var dashboardInput = document.getElementById("dashboardSelect").value;
+			  	if (dashboardSelect.selected == true){
+			    dashboardString = dashboardLink;
+			    } else {
+					    dashboardString = "";
+					};
+			  var dataCenterInput = document.getElementById("dataCenterSelect").value;
+			  	if (dataCenterSelect.selected == true){
+			    dataCenterString = dataCenterLink;
+			    } else {
+					    dataCenterString = "";
+					};
+			  var gcpBillingAccountInput = document.getElementById("gcpBillingAccountSelect").value;
+			  	if (gcpBillingAccountSelect.selected == true){
+			    gcpBillingAccountString = gcpBillingAccountLink;
+			    } else {
+					    gcpBillingAccountString = "";
+					};
+			  var gcpBillingAccountIdInput = document.getElementById("gcpBillingAccountIdSelect").value;
+			  	if (gcpBillingAccountIdSelect.selected == true){
+			    gcpBillingAccountIdString = gcpBillingAccountIdLink;
+			    } else {
+					    gcpBillingAccountIdString = "";
+					};
+			  var gcpComputeProjectsInput = document.getElementById("gcpComputeProjectsSelect").value;
+			  	if (gcpComputeProjectsSelect.selected == true){
+			    gcpComputeProjectsString = gcpComputeProjectsLink;
+			    } else {
+					    gcpComputeProjectsString = "";
+					};
+			  var gcpComputeProjectsIdInput = document.getElementById("gcpComputeProjectsIdSelect").value;
+			  	if (gcpComputeProjectsIdSelect.selected == true){
+			    gcpComputeProjectsIdString = gcpComputeProjectsIdLink;
+			    } else {
+					    gcpComputeProjectsIdString = "";
+					};
+			  var ociTenanciesInput = document.getElementById("ociTenanciesSelect").value;
+			  	if (ociTenanciesSelect.selected == true){
+			    ociTenanciesString = ociTenanciesLink;
+			    } else {
+					    ociTenanciesString = "";
+					};
+			  var ociTenanciesIdInput = document.getElementById("ociTenanciesIdSelect").value;
+			  	if (ociTenanciesIdSelect.selected == true){
+			    ociTenanciesIdString = ociTenanciesIdLink;
+			    } else {
+					    ociTenanciesIdString = "";
+					};
+			  var organizationInput = document.getElementById("organizationSelect").value;
+			  	if (organizationSelect.selected == true){
+			    organizationString = organizationLink;
+			    } else {
+					    organizationString = "";
+					};
+			  var perspectiveInput = document.getElementById("perspectiveSelect").value;
+			  	if (perspectiveSelect.selected == true){
+			    perspectiveString = perspectiveLink;
+			    } else {
+					    perspectiveString = "";
+					};
+			  var perspectiveIdInput = document.getElementById("perspectiveIdSelect").value;
+			  	if (perspectiveIdSelect.selected == true){
+			    perspectiveIdString = perspectiveIdLink;
+			    } else {
+					    perspectiveIdString = "";
+					};
+			  var policyInput = document.getElementById("policySelect").value;
+			  	if (policySelect.selected == true){
+			    policyString = policyLink;
+			    } else {
+					    policyString = "";
+					};
+			  var policyIdInput = document.getElementById("policyIdSelect").value;
+			  	if (policyIdSelect.selected == true){
+			    policyIdString = policyIdLink;
+			    } else {
+					    policyIdString = "";
+					};
+			  var roleInput = document.getElementById("roleSelect").value;
+			  	if (roleSelect.selected == true){
+			    roleString = roleLink;
+			    } else {
+					    roleString = "";
+					};
+			  var roleIdInput = document.getElementById("roleIdSelect").value;
+			  	if (roleIdSelect.selected == true){
+			    roleIdString = roleIdLink;
+			    } else {
+					    roleIdString = "";
+					};
+			  var userInput = document.getElementById("userSelect").value;
+			  	if (userSelect.selected == true){
+			    userString = userLink;
+			    } else {
+					    userString = "";
+					};
+			  var vmcCspOrganizationInput = document.getElementById("vmcCspOrganizationSelect").value;
+			  	if (vmcCspOrganizationSelect.selected == true){
+			    vmcCspOrganizationString = vmcCspOrganizationLink;
+			    } else {
+					    vmcCspOrganizationString = "";
+					};
+			  var vmcCspOrganizationIdInput = document.getElementById("vmcCspOrganizationIdSelect").value;
+			  	if (vmcCspOrganizationIdSelect.selected == true){
+			    vmcCspOrganizationIdString = vmcCspOrganizationIdLink;
+			    } else {
+					    vmcCspOrganizationIdString = "";
+					};
+			  var vmcVCenterInput = document.getElementById("vmcVCenterSelect").value;
+			  	if (vmcVCenterSelect.selected == true){
+			    vmcVCenterString = vmcVCenterLink;
+			    } else {
+					    vmcVCenterString = "";
+					};
+			  var jsonUrlPayload = consoleScript.replace(/<jsonUrl>/gi,actionString + actionIdString + agentStatString + agentStatIdString + aggregatorString + aggregatorIdString + awsAccountString + awsAccountIdString + azureEnrollmentString + azureEnrollmentIdString + azureServicePrincipalString + azureServicePrincipalIdString + azureSubscriptionString + containerClusterString + customerString + customerIdString + customReportString + dashboardString + dataCenterString + gcpBillingAccountString + gcpBillingAccountIdString + gcpComputeProjectsString + gcpComputeProjectsIdString + ociTenanciesString + ociTenanciesIdString + organizationString + perspectiveString + perspectiveIdString + policyString + policyIdString + roleString + roleIdString + userString + vmcCspOrganizationString + vmcCspOrganizationIdString + vmcVCenterString);
+
+			  var modifiedJsonUrlPayload = jsonUrlPayload.replace(/<Id>/gi,jsonIdTextBox.value);
+
+			  	document.getElementById("jsonScriptTextBox").value = modifiedJsonUrlPayload;
+				copyJsonScript();
+			};
+
+			function copyJsonScript() {
+			  var copyJsonScriptText = document.getElementById("jsonScriptTextBox");
+				copyJsonScriptText.select();
+				document.execCommand("copy");
+				document.getElementById("success").style.visibility = "visible";
+			};
+		</script>
+	</div>
+
+		<style>
+			#externalId {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#externalIdInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#accountName {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#accountNameInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#policyArn {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#policyArnInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#json {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#success {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 565656;
+			  visibility: hidden;
+
+			}
+
+			#jsonTypeForm, #jsonSelectionBar, #div1, #div2, #div3, #div4,#div5,#div6,#div7,#div8 {
+			  margin-left: 20px;
+			}
+
+			h1 {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 32px;
+			  color: 565656;
+			}
+
+			h2 {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 21.6px;
+			  color: 0079B8;
+			}
+
+			p, #jsonSelectionBar, #scriptType, {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 565656;
+			}
+
+			a {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 0079B8;  
+			}
+		</style>
+	</body>
+</html>
