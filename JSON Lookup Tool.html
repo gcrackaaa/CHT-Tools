@@ -12,30 +12,31 @@
 
 		<select id="scriptType" onselect="generateJsonScript()">
 			<option value="">-- Select --</option>
-			<option id="actionSelect">Actions</option>
+			<option id="actionSelect">Actions List</option>
 			<option id="actionIdSelect">Action (ID)</option>
-			<option id="agentStatSelect">Agent Stats</option>
+			<option id="agentStatSelect">Agent Stats List</option>
 			<option id="agentStatIdSelect">Agent Stat (ID)</option>
-			<option id="aggregatorSelect">Aggregators</option>
+			<option id="aggregatorSelect">Aggregators List</option>
 			<option id="aggregatorIdSelect">Aggregator (ID)</option>
-			<option id="awsAccountSelect">AWS Accounts</option>
+			<option id="awsAccountSelect">AWS Accounts List</option>
 			<option id="awsAccountIdSelect">AWS Account (ID)</option>
-			<option id="azureEnrollmentSelect">Azure Enrollments</option>
+			<option id="azureEnrollmentSelect">Azure Enrollments List</option>
 			<option id="azureEnrollmentIdSelect">Azure Enrollment (ID)</option>
-			<option id="azureServicePrincipalSelect">Azure Service Principals</option>
+			<option id="azureServicePrincipalSelect">Azure Service Principals List</option>
 			<option id="azureServicePrincipalIdSelect">Azure Service Principal (ID)</option>
-			<option id="azureSubscriptionSelect">Azure Subscriptions</option>
-			<option id="containerClusterSelect">Container Clusters</option>
-			<option id="customerSelect">Customers</option>
+			<option id="azureSubscriptionSelect">Azure Subscriptions List</option>
+			<option id="azureSubscriptionIdSelect">Azure Subscription (ID)</option>
+			<option id="containerClusterSelect">Container Clusters List</option>
+			<option id="customerSelect">Customers List</option>
 			<option id="customerIdSelect">Customer (ID)</option>
-			<option id="customReportSelect">Custom Reports</option>
+			<option id="customReportSelect">Custom Reports List</option>
 			<option id="dashboardSelect">Dashboard (ID)</option>
-			<option id="dataCenterSelect">Data Center Accounts</option>
-			<option id="gcpBillingAccountSelect">GCP Billing Accounts</option>
+			<option id="dataCenterSelect">Data Center Accounts List</option>
+			<option id="gcpBillingAccountSelect">GCP Billing Accounts List</option>
 			<option id="gcpBillingAccountIdSelect">GCP Billing Account (ID)</option>
-			<option id="gcpComputeProjectsSelect">GCP Compute Projects</option>
+			<option id="gcpComputeProjectsSelect">GCP Compute Projects List</option>
 			<option id="gcpComputeProjectsIdSelect">GCP Compute Project (ID)</option>
-			<option id="ociTenanciesSelect">OCI Tenancies</option>
+			<option id="ociTenanciesSelect">OCI Tenancies List</option>
 			<option id="ociTenanciesIdSelect">OCI Tenancy (ID)</option>
 			<option id="organizationSelect">Organizations List</option>
 			<option id="perspectiveSelect">Perspectives List</option>
@@ -82,10 +83,11 @@
 			const azureEnrollmentLink = 'azure_enrollments.json'
 			const azureEnrollmentIdLink = 'azure_enrollments/<Id>.json'
 			const azureServicePrincipalLink = 'azure_service_principals.json'
-			const azureServicePrincipalIDLink = 'azure_service_principals/<Id>.json'
+			const azureServicePrincipalIdLink = 'azure_service_principals/<Id>.json'
 			const azureSubscriptionLink = 'assets/azure/subscriptions.json'
+			const azureSubscriptionIdLink = 'azure_subscriptions/<Id>.json'
 			const containerClusterLink = 'containers_clusters.json'
-			const customerLink = 'customers.json'
+			const customerLink = 'admin/customers.json'
 			const customerIdLink = 'customers/<Id>.json'
 			const customReportLink = 'reports/custom.json'			
 			const dashboardLink = 'dashboards/<Id>.json'
@@ -194,6 +196,12 @@
 			    azureSubscriptionString = azureSubscriptionLink;
 			    } else {
 					    azureSubscriptionString = "";
+					};
+			  var azureSubscriptionIdInput = document.getElementById("azureSubscriptionIdSelect").value;
+			  	if (azureSubscriptionIdSelect.selected == true){
+			    azureSubscriptionIdString = azureSubscriptionIdLink;
+			    } else {
+					    azureSubscriptionIdString = "";
 					};
 			  var containerClusterInput = document.getElementById("containerClusterSelect").value;
 			  	if (containerClusterSelect.selected == true){
@@ -333,7 +341,7 @@
 			    } else {
 					    vmcVCenterString = "";
 					};
-			  var jsonUrlPayload = consoleScript.replace(/<jsonUrl>/gi,actionString + actionIdString + agentStatString + agentStatIdString + aggregatorString + aggregatorIdString + awsAccountString + awsAccountIdString + azureEnrollmentString + azureEnrollmentIdString + azureServicePrincipalString + azureServicePrincipalIdString + azureSubscriptionString + containerClusterString + customerString + customerIdString + customReportString + dashboardString + dataCenterString + gcpBillingAccountString + gcpBillingAccountIdString + gcpComputeProjectsString + gcpComputeProjectsIdString + ociTenanciesString + ociTenanciesIdString + organizationString + perspectiveString + perspectiveIdString + policyString + policyIdString + roleString + roleIdString + userString + vmcCspOrganizationString + vmcCspOrganizationIdString + vmcVCenterString);
+			  var jsonUrlPayload = consoleScript.replace(/<jsonUrl>/gi,actionString + actionIdString + agentStatString + agentStatIdString + aggregatorString + aggregatorIdString + awsAccountString + awsAccountIdString + azureEnrollmentString + azureEnrollmentIdString + azureServicePrincipalString + azureServicePrincipalIdString + azureSubscriptionString + azureSubscriptionIdString + containerClusterString + customerString + customerIdString + customReportString + dashboardString + dataCenterString + gcpBillingAccountString + gcpBillingAccountIdString + gcpComputeProjectsString + gcpComputeProjectsIdString + ociTenanciesString + ociTenanciesIdString + organizationString + perspectiveString + perspectiveIdString + policyString + policyIdString + roleString + roleIdString + userString + vmcCspOrganizationString + vmcCspOrganizationIdString + vmcVCenterString);
 
 			  var modifiedJsonUrlPayload = jsonUrlPayload.replace(/<Id>/gi,jsonIdTextBox.value);
 
