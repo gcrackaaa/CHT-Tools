@@ -68,11 +68,9 @@
 			divsO = document.getElementById("scriptTypeForm").getElementsByTagName('div');
 		}
 	</script>
-		<button onclick="generateJsonScript()">Generate & Copy</button>
-		<input type="text" id="jsonScriptTextBox">
-		<p id="success"> Successfully copied to your clipboard.</p>
+		<button onclick="generateJsonScript()">Generate & Redirect</button>
 		<script>
-			const consoleScript = 'var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content");  var xhr = new XMLHttpRequest();  xhr.open(\'GET\', \'https://apps.cloudhealthtech.com/<jsonUrl>\', false);  xhr.setRequestHeader(\'Content-Type\', \'application/json\');  xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\');  xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token);  xhr.send();  console.log(xhr.response);'
+			const consoleScript = 'https://apps.cloudhealthtech.com/<jsonUrl>'
 			const actionLink = 'v1/actions/action_configs.json'
 			const actionIdLink = 'v1/actions/action_configs/<Id>.json'
 			const agentStatLink = 'agent_stats.json'
@@ -339,15 +337,7 @@
 
 			  var modifiedJsonUrlPayload = jsonUrlPayload.replace(/<Id>/gi,jsonIdTextBox.value);
 
-			  	document.getElementById("jsonScriptTextBox").value = modifiedJsonUrlPayload;
-				copyJsonScript();
-			};
-
-			function copyJsonScript() {
-			  var copyJsonScriptText = document.getElementById("jsonScriptTextBox");
-				copyJsonScriptText.select();
-				document.execCommand("copy");
-				document.getElementById("success").style.visibility = "visible";
+			  window.open(modifiedJsonUrlPayload)		  
 			};
 		</script>
 	</div>
