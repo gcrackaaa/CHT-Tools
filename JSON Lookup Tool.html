@@ -6,7 +6,7 @@
 	<br>
 	<div id="jsonSelectionBar">
 		<h1>JSON Lookup Tool</h1>
-		<h2>Select A JSON Type To Lookup:</h2>
+		<h2>Select Service/Resource:</h2>
 	</div>
 	<form action="#" method="post" id="jsonTypeForm">
 
@@ -36,6 +36,8 @@
 			<option id="gcpBillingAccountIdSelect">GCP Billing Account (ID)</option>
 			<option id="gcpComputeProjectsSelect">GCP Compute Projects List</option>
 			<option id="gcpComputeProjectsIdSelect">GCP Compute Project (ID)</option>
+			<option id="groupsetSelect">Groupset List</option>
+			<option id="groupsetIdSelect">Groupset (Id)</option>
 			<option id="ociTenanciesSelect">OCI Tenancies List</option>
 			<option id="ociTenanciesIdSelect">OCI Tenancy (ID)</option>
 			<option id="organizationSelect">Organizations List</option>
@@ -53,7 +55,7 @@
 		</select>
 </form>		
 	<div id="div1">
-		<p id="json">Paste Id of JSON you're looking to lookup (If applicable):</p>
+		<p id="json">Paste ID (if applicable) of above selection to lookup:</p>
 		<input type="text" id="jsonIdTextBox" required><br><br>
 			<script>
 		function showModule(elem) {
@@ -96,6 +98,8 @@
 			const gcpBillingAccountIdLink = 'gcp_billing_accounts/<Id>.json'
 			const gcpComputeProjectsLink = 'gcp_compute_projects.json'
 			const gcpComputeProjectsIdLink = 'gcp_compute_projects/<Id>.json'
+			const groupsetLink = 'groupset.json'
+			const groupsetIdLink = 'groupset/<Id>.json'
 			const ociTenanciesLink = 'oci_tenancies.json'
 			const ociTenanciesIdLink = 'oci_tenancies/<Id>.json'
 			const organizationLink = 'organizations.json'
@@ -263,6 +267,18 @@
 			    } else {
 					    gcpComputeProjectsIdString = "";
 					};
+			  var groupsetInput = document.getElementById("groupsetSelect").value;
+			  	if (groupsetSelect.selected == true){
+			    groupsetString = groupsetLink;
+			    } else {
+					    groupsetString = "";
+					};
+			  var groupsetIdInput = document.getElementById("groupsetIdSelect").value;
+			  	if (groupsetIdSelect.selected == true){
+			    groupsetIdString = groupsetIdLink;
+			    } else {
+					    groupsetIdString = "";
+					};
 			  var ociTenanciesInput = document.getElementById("ociTenanciesSelect").value;
 			  	if (ociTenanciesSelect.selected == true){
 			    ociTenanciesString = ociTenanciesLink;
@@ -341,7 +357,7 @@
 			    } else {
 					    vmcVCenterString = "";
 					};
-			  var jsonUrlPayload = consoleScript.replace(/<jsonUrl>/gi,actionString + actionIdString + agentStatString + agentStatIdString + aggregatorString + aggregatorIdString + awsAccountString + awsAccountIdString + azureEnrollmentString + azureEnrollmentIdString + azureServicePrincipalString + azureServicePrincipalIdString + azureSubscriptionString + azureSubscriptionIdString + containerClusterString + customerString + customerIdString + customReportString + dashboardString + dataCenterString + gcpBillingAccountString + gcpBillingAccountIdString + gcpComputeProjectsString + gcpComputeProjectsIdString + ociTenanciesString + ociTenanciesIdString + organizationString + perspectiveString + perspectiveIdString + policyString + policyIdString + roleString + roleIdString + userString + vmcCspOrganizationString + vmcCspOrganizationIdString + vmcVCenterString);
+			  var jsonUrlPayload = consoleScript.replace(/<jsonUrl>/gi,actionString + actionIdString + agentStatString + agentStatIdString + aggregatorString + aggregatorIdString + awsAccountString + awsAccountIdString + azureEnrollmentString + azureEnrollmentIdString + azureServicePrincipalString + azureServicePrincipalIdString + azureSubscriptionString + azureSubscriptionIdString + containerClusterString + customerString + customerIdString + customReportString + dashboardString + dataCenterString + gcpBillingAccountString + gcpBillingAccountIdString + gcpComputeProjectsString + gcpComputeProjectsIdString + groupsetString + groupsetIdString + ociTenanciesString + ociTenanciesIdString + organizationString + perspectiveString + perspectiveIdString + policyString + policyIdString + roleString + roleIdString + userString + vmcCspOrganizationString + vmcCspOrganizationIdString + vmcVCenterString);
 
 			  var modifiedJsonUrlPayload = jsonUrlPayload.replace(/<Id>/gi,jsonIdTextBox.value);
 
