@@ -1,0 +1,130 @@
+<head>
+	<meta charset="utf-8">
+	<title>RoleDocument JSON Generator Tool</title>
+</head>
+<body>
+	<br>
+	<div id="roleDocumentSelectionBar">
+		<h1>Role Document JSON Generator Tool</h1>
+		<h2>Select A Role Document To Create:</h2>
+	</div>
+	<form action="#" method="post" id="roleDocumentTypeForm">
+
+		<select id="scriptType" onselect="generateRoleDocumentScript()">
+			<option id="vropsSelect">vROps Integration</option>
+		</select>
+</form>		
+	<div id="div1">
+		<button onclick="generateRoleDocumentScript()">Generate & Copy</button>
+		<br /><br />
+		<input type="text" id="roleDocumentScriptTextBox">
+		<p id="success"> Successfully copied to your clipboard.</p>
+		<script>
+			const vropsJSON = 'mutation {createRoleDocument(input: {name: ".vROps Integration", description: "Necessary permissions to integrate vRealize Operations integration.", metadata: {shared: {enabled: true}}, permissions: [{subject: "datacenter_dashboard", action: "change"}, {subject: "data_center_account", action: "create"}, {subject: "data_center_account", action: "delete"}, {subject: "datacenter_agent_status", action: "disable_autoupdate"}, {subject: "datacenter_agent_status", action: "enable_autoupdate"}, {subject: "datacenter_agent_status", action: "export"}, {subject: "data_center_account", action: "export"}, {subject: "data_center_memory_performance_report", action: "export"}, {subject: "data_center_server", action: "export"}, {subject: "data_center_server_block_device", action: "export"}, {subject: "data_center_server_cost_report", action: "export"}, {subject: "data_center_server_cpu", action: "export"}, {subject: "data_center_server_file_system", action: "export"}, {subject: "data_center_server_network_interface", action: "export"}, {subject: "data_center_server_performance_report", action: "export"}, {subject: "data_center_server_usage_report", action: "export"}, {subject: "data_center_tag", action: "export"}, {subject: "profile", action: "generate_api_key"}, {subject: "datacenter_agent_configuration", action: "read"}, {subject: "datacenter_agent_status", action: "read"}, {subject: "datacenter_dashboard", action: "read"}, {subject: "data_center_account", action: "read"}, {subject: "data_center_memory_performance_report", action: "read"}, {subject: "data_center_server", action: "read"}, {subject: "data_center_server_block_device", action: "read"}, {subject: "data_center_server_cost_report", action: "read"}, {subject: "data_center_server_cpu", action: "read"}, {subject: "data_center_server_file_system", action: "read"}, {subject: "data_center_server_network_interface", action: "read"}, {subject: "data_center_server_performance_report", action: "read"}, {subject: "data_center_server_usage_daily", action: "read"}, {subject: "data_center_server_usage_report", action: "read"}, {subject: "data_center_tag", action: "read"}, {subject: "profile", action: "read"}, {subject: "datacenter_agent_status", action: "save"}, {subject: "data_center_account", action: "save"}, {subject: "data_center_memory_performance_report", action: "save"}, {subject: "data_center_server", action: "save"}, {subject: "data_center_server_block_device", action: "save"}, {subject: "data_center_server_cost_report", action: "save"}, {subject: "data_center_server_cpu", action: "save"}, {subject: "data_center_server_file_system", action: "save"}, {subject: "data_center_server_network_interface", action: "save"}, {subject: "data_center_server_performance_report", action: "save"}, {subject: "data_center_server_usage_report", action: "save"}, {subject: "data_center_tag", action: "save"}, {subject: "data_center_memory_performance_report", action: "share"}, {subject: "data_center_server_cost_report", action: "share"}, {subject: "data_center_server_performance_report", action: "share"}, {subject: "data_center_server_usage_report", action: "share"}, {subject: "datacenter_agent_status", action: "subscribe"}, {subject: "data_center_account", action: "subscribe"}, {subject: "data_center_memory_performance_report", action: "subscribe"}, {subject: "data_center_server", action: "subscribe"}, {subject: "data_center_server_block_device", action: "subscribe"}, {subject: "data_center_server_cost_report", action: "subscribe"}, {subject: "data_center_server_cpu", action: "subscribe"}, {subject: "data_center_server_file_system", action: "subscribe"}, {subject: "data_center_server_network_interface", action: "subscribe"}, {subject: "data_center_server_performance_report", action: "subscribe"}, {subject: "data_center_server_usage_report", action: "subscribe"}, {subject: "data_center_tag", action: "subscribe"}, {subject: "data_center_account", action: "tag"}, {subject: "data_center_server", action: "tag"}, {subject: "datacenter_agent_configuration", action: "update"}, {subject: "data_center_account", action: "update"}, {subject: "data_center_server", action: "update"}, {subject: "profile", action: "update"}, {subject: "data_center_cost_current_report", action: "read"}, {subject: "data_center_cost_current_report", action: "export"}, {subject: "data_center_cost_current_report", action: "save"}, {subject: "data_center_cost_current_report", action: "share"}, {subject: "data_center_cost_current_report", action: "subscribe"}, {subject: "data_center_cost_driver_report", action: "read"}, {subject: "data_center_cost_driver_report", action: "export"}, {subject: "data_center_cost_driver_report", action: "save"}, {subject: "data_center_cost_driver_report", action: "share"}, {subject: "data_center_cost_driver_report", action: "subscribe"}, {subject: "data_center_host", action: "read"}, {subject: "data_center_host", action: "export"}, {subject: "data_center_host", action: "save"}, {subject: "data_center_host", action: "subscribe"}, {subject: "data_center_host", action: "tag"}, {subject: "data_center_cluster", action: "read"}, {subject: "data_center_cluster", action: "export"}, {subject: "data_center_cluster", action: "save"}, {subject: "data_center_cluster", action: "subscribe"}, {subject: "data_center_cluster", action: "tag"}, {subject: "data_center_data_center", action: "read"}, {subject: "data_center_data_center", action: "export"}, {subject: "data_center_data_center", action: "save"}, {subject: "data_center_data_center", action: "subscribe"}, {subject: "data_center_data_center", action: "tag"}, {subject: "data_center_data_store", action: "read"}, {subject: "data_center_data_store", action: "export"}, {subject: "data_center_data_store", action: "save"}, {subject: "data_center_data_store", action: "subscribe"}, {subject: "data_center_data_store", action: "tag"}]}) {id name description permissions {id action subject}}}'
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateRoleDocumentScript() {
+			  var vropsInput = document.getElementById("vropsSelect").value;
+			  	if (vropsSelect.selected == true){
+			    vropsString = vropsJSON;
+			    } else {
+					    vropsString = "";
+					};
+			  var roleDocumentPayload = vropsString;
+			  	document.getElementById("roleDocumentScriptTextBox").value = roleDocumentPayload;
+				copyRoleDocumentScript();
+			};
+
+			function copyRoleDocumentScript() {
+			  var copyRoleDocumentScriptText = document.getElementById("roleDocumentScriptTextBox");
+				copyRoleDocumentScriptText.select();
+				document.execCommand("copy");
+				document.getElementById("success").style.visibility = "visible";
+			};
+		</script>
+	</div>
+
+		<style>
+			#externalId {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#externalIdInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#accountName {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#accountNameInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#policyArn {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#policyArnInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#json {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#success {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 565656;
+			  visibility: hidden;
+
+			}
+
+			#roleDocumentTypeForm, #roleDocumentSelectionBar, #div1, #div2, #div3, #div4,#div5,#div6,#div7,#div8 {
+			  margin-left: 20px;
+			}
+
+			h1 {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 32px;
+			  color: 565656;
+			}
+
+			h2 {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 21.6px;
+			  color: 0079B8;
+			}
+
+			p, #roleDocumentSelectionBar, #scriptType, {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 565656;
+			}
+
+			a {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 0079B8;  
+			}
+		</style>
+	</body>
+</html>
