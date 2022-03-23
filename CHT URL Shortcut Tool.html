@@ -1,0 +1,144 @@
+<head>
+	<meta charset="utf-8">
+	<title>CHT URL Shortcut Tool</title>
+</head>
+<body>
+	<br>
+	<div id="jsonSelectionBar">
+		<h1>CHT URL Shortcut Tool</h1>
+		<h2>Paste Info Into Text Boxes:</h2>
+	</div>
+</form>		
+	<div id="div1">
+		<p id="json">Destination URL:</p>
+		<input type="text" id="targetUrlTextBox" required><br>
+		<p id="json">Customer Tenant ID:</p>
+		<input type="text" id="tenantIdTextBox" required><br><br>
+			<script>
+		function showModule(elem) {
+			if(elem.selectedIndex != 0) {
+			for(var i=0; i < divsO.length; i++) {
+				divsO[i].style.display = 'none';
+			}
+		document.getElementById('div'+elem.value).style.display = 'block';
+			}
+		}
+
+	</script>
+		<button onclick="generateUrl()">Generate & Copy URL</button>&nbsp&nbsp<button onclick="redirectFinalUrl()">Test URL</button><br><br>
+		<textarea type="text" wrap="hard" id="finalUrlTextBox" style="width: 300px; height:50px"></textarea><p id="success"> Successfully copied to your clipboard.</p><br><br>
+		<script>
+			const templateUrl = 'https://apps.cloudhealthtech.com/authorization/security_context?customer_id=<tenantId>&redirect_to=<targetUrl>'
+			const baseUrl = 'https://apps.cloudhealthtech.com/'
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateUrl() {
+			  var shortTargetUrl = templateUrl.replace(/<targetUrl>/gi,targetUrlTextBox.value.replace(baseUrl,""));
+			  var finalUrl = shortTargetUrl.replace(/<tenantId>/gi,tenantIdTextBox.value);
+
+			  	document.getElementById("finalUrlTextBox").value = finalUrl;
+				copyFinalUrlScript();
+			}
+
+			function copyFinalUrlScript() {
+			  var copyFinalUrl = document.getElementById("finalUrlTextBox");
+				copyFinalUrl.select();
+				document.execCommand("copy");
+				document.getElementById("success").style.visibility = "visible";
+			}
+
+			function redirectFinalUrl() {
+			  var shortTargetUrl = templateUrl.replace(/<targetUrl>/gi,targetUrlTextBox.value.replace(baseUrl,""));
+			  var finalUrl = shortTargetUrl.replace(/<tenantId>/gi,tenantIdTextBox.value);
+
+			  window.open(finalUrl)	
+
+			};
+		</script>
+
+	</div>
+
+		<style>
+			#externalId,textarea {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#externalIdInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#accountName {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#accountNameInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#policyArn {
+			  padding:7px;
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#policyArnInput {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#json {
+			  font-size: 14px;
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			}
+
+			#success {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 565656;
+			  visibility: hidden;
+
+			}
+
+			#jsonTypeForm, #jsonSelectionBar, #div1, #div2, #div3, #div4,#div5,#div6,#div7,#div8 {
+			  margin-left: 20px;
+			}
+
+			h1 {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 32px;
+			  color: 565656;
+			}
+
+			h2 {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 21.6px;
+			  color: 0079B8;
+			}
+
+			p, #jsonSelectionBar, #scriptType, {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 565656;
+			}
+
+			a {
+			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
+			  font-size: 14px;
+			  color: 0079B8;  
+			}
+		</style>
+	</body>
+</html>
