@@ -13,35 +13,27 @@
 		<p id="json">Destination URL:</p>
 		<input type="text" id="targetUrlTextBox" required><br>
 		<p id="json">Customer Tenant ID:</p>
-		<input type="text" id="tenantIdTextBox" required><br><br>
-			<script>
-		function showModule(elem) {
-			if(elem.selectedIndex != 0) {
-			for(var i=0; i < divsO.length; i++) {
-				divsO[i].style.display = 'none';
-			}
-		document.getElementById('div'+elem.value).style.display = 'block';
-			}
-		}
-
-	</script>
+		<input type="text" id="tenantIdTextBox" required><br>
+		<p id="json">Organization ID (Optional):</p>
+		<input type="text" id="orgIdTextBox" required><br><br>
 		<button onclick="generateUrl()">Generate & Copy URL</button>&nbsp&nbsp<button onclick="redirectFinalUrl()">Test URL</button><br><br>
 		<textarea type="text" wrap="hard" id="finalUrlTextBox" style="width: 300px; height:50px"></textarea><p id="success"> Successfully copied to your clipboard.</p><br><br>
 		<script>
-			const templateUrl = 'https://apps.cloudhealthtech.com/authorization/security_context?customer_id=<tenantId>&redirect_to=<targetUrl>'
+			const templateUrl = 'https://apps.cloudhealthtech.com/authorization/security_context?customer_id=<Id>&redirect_to=<targetUrl>'
 			const baseUrl = 'https://apps.cloudhealthtech.com/'
-
-			function createNode(element) {
-			  return document.createElement(element);
-			}
-
-			function append(parent, el) {
-			  return parent.appendChild(el);
-			}
 
 			function generateUrl() {
 			  var shortTargetUrl = templateUrl.replace(/<targetUrl>/gi,targetUrlTextBox.value.replace(baseUrl,""));
-			  var finalUrl = shortTargetUrl.replace(/<tenantId>/gi,tenantIdTextBox.value);
+			  if (orgIdTextBox.value.length == 0)
+			  {
+			  	shortTargetUrl = templateUrl.replace(/<Id>/,"<custId>")
+			  }
+			  else
+			  {
+			  	shortTargetUrl = templateUrl.replace(/<Id>/,"<custId><orgId>")
+			  }
+
+			  finalUrl = shortTargetUrl.replace(/<custId>/gi,tenantIdTextBox.value).replace(/<orgId>/,"&organization_id=" + orgIdTextBox.value).replace(/<targetUrl>/gi,targetUrlTextBox.value.replace(baseUrl,""))
 
 			  	document.getElementById("finalUrlTextBox").value = finalUrl;
 				copyFinalUrlScript();
