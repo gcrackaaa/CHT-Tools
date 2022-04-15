@@ -48,7 +48,16 @@
 
 			function redirectFinalUrl() {
 			  var shortTargetUrl = templateUrl.replace(/<targetUrl>/gi,targetUrlTextBox.value.replace(baseUrl,""));
-			  var finalUrl = shortTargetUrl.replace(/<tenantId>/gi,tenantIdTextBox.value);
+			  if (orgIdTextBox.value.length == 0)
+			  {
+			  	shortTargetUrl = templateUrl.replace(/<Id>/,"<custId>")
+			  }
+			  else
+			  {
+			  	shortTargetUrl = templateUrl.replace(/<Id>/,"<custId><orgId>")
+			  }
+
+			  finalUrl = shortTargetUrl.replace(/<custId>/gi,tenantIdTextBox.value).replace(/<orgId>/,"&organization_id=" + orgIdTextBox.value).replace(/<targetUrl>/gi,targetUrlTextBox.value.replace(baseUrl,""))
 
 			  window.open(finalUrl)	
 
