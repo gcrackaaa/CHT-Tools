@@ -36,11 +36,15 @@
 			<option value="9">Expiring Savings Plans/Reservations & Modifications</option>
 			<option value="10">Lights On/Lights Off</option>
 			<option value="11">Statuses</option>
-			<option value="12">Instances In Unapproved Region</option> 
-			<option value="13">Common Mining Instance Types</option>
-			<option value="14">List Of Taggable Assets</option>
-			<option value="15">Anomaly Detection</option>
-			<option value="16">Untagged AWS Assets (By Resource Type)</option>
+			<option value="12">Instances Running On Older Generation Types</option>
+			<option value="13">Instances In Unapproved Region</option> 
+			<option value="14">Common Mining Instance Types</option>
+			<option value="15">RegExp Examples</option>
+			<option value="16">List Of Taggable Assets</option>
+			<option value="17">Anomaly Detection</option>
+			<option value="18">Untagged AWS Assets (By Resource Type)</option>
+			<option value="19">Blank XML</option>
+
 		</select>
 
 	<div id="div1">
@@ -968,6 +972,50 @@
 	</div>
 
 	<div id="div12">
+		<h2>Instances Running On Older Generation Types:</h2>
+		<p>Select the clouds you'd like to setup:</p>
+		<p><input type="checkbox" id="awsOgCheck"> AWS</p>
+
+		<button onclick="generateOgConsoleScript()">Generate & Copy JSON To Clipboard</button>
+		<input type="text" id="ogConsoleScriptTextBox">
+
+		<script>
+			const ogConsoleScript = 'var payload = `<ogPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'POST\', \'https://apps.cloudhealthtech.com/policies/new.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token);   xhr.send(payload); console.log(xhr.response);'
+			const ogPayload = '{"policy":{"name":".Instances Running On Older Generation Types","description":"Helps to identify any instances running on an older generation of an instance type (Built around https://aws.amazon.com/ec2/previous-generation).","enabled":true,"version":2,"filters":{},"policy_type":0,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"blocks":[<ogClouds>],"perspective":-1}}'
+			const awsOgJSON = '{"name": "Consider Upgrading To A T2 Instance","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "9:00 AM -0500","repeat_hour_interval": 4,"modified": true},"documentation": "T2 instances are Burstable Performance Instances that provide a baseline level of CPU performance with the ability to burst above the baseline. T2 instances are less expensive than m1.small, m1.medium, and t1.micro instances in most regions. We recommend T2 for general-purpose applications such as web servers, developer environments and small databases.","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "T1/M1 Instances Running More Than 1 Hour This Month","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_instance_hrs_mtd","label": "Instance MTD Hours","source": "instant","cube_id": "0000","measure_id": "total_hours","unit": "hours","periods":["monthly"],"exclude_filters": null,"translated_description": "Test instance hours month-to-date against individual EC2 instances","functions": null,"start_time": null},"topic":{"id": "usage","label": "Usage","policy_type": null},"granularity": "monthly","value": 1,"time": "is","abs": "abs","direction": "more","days": 1,"tag_conditions":[],"runlist_conditions":[],"password_policy":{},"duration": 30,"interval": "days","filters":[{"ref": "EC2-Instance-Type-Family","label": "Instance Type Families","members":[{"name": "t1","label": "t1"},{"name": "m1","label": "m1"}]}]}],"level": 30,"actions":[]}]}],"resource_type": "aws_ec2_instance","clear_suppressions": false},{"name": "Consider Upgrading To An M5 Instance","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "9:00 AM -0500","repeat_hour_interval": 4,"modified": true},"documentation": "M5 instances provide the latest Intel Xeon processors paired with the new Nitro Hypervisor which delivers practically all of the compute and memory resources of the host hardware to your instances. With M5, you get a higher performing CPU with support for AVX-512 instructions, up to 384 GiB of RAM, and up to 25 Gbps of networking bandwidth, all at a lower price point then our previous generation instances.","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "M1/M3 Instances Running More Than 1 Hour This Month","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_instance_hrs_mtd","label": "Instance MTD Hours","source": "instant","cube_id": "0000","measure_id": "total_hours","unit": "hours","periods":["monthly"],"exclude_filters": null,"translated_description": "Test instance hours month-to-date against individual EC2 instances","functions": null,"start_time": null},"topic":{"id": "usage","label": "Usage","policy_type": null},"granularity": "monthly","value": 1,"time": "is","abs": "abs","direction": "more","days": 1,"tag_conditions":[{"condition_type": "missing"}],"runlist_conditions":[],"password_policy":{},"duration": 30,"interval": "days","filters":[{"ref": "EC2-Instance-Type-Family","label": "Instance Type Families","members":[{"name": "m1","label": "m1"},{"name": "m3","label": "m3"}]}]}],"level": 30,"actions":[]}]}],"resource_type": "aws_ec2_instance","clear_suppressions": false},{"name": "Consider Upgrading To A C5 Instance","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "9:00 AM -0500","repeat_hour_interval": 4,"modified": true},"documentation": "C5 instances provide the latest Intel Xeon processors paired with the new Nitro Hypervisor which delivers practically all of the compute and memory resources of the host hardware to your instances. With C5, you get a higher performing CPU with support for AVX-512 instructions, up to 144 GiB of RAM, and up to 25 Gbps of networking bandwidth, all at a lower price point then our previous generation instances.","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "C1/C3 Instances Running More Than 1 Hour This Month","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_instance_hrs_mtd","label": "Instance MTD Hours","source": "instant","cube_id": "0000","measure_id": "total_hours","unit": "hours","periods":["monthly"],"exclude_filters": null,"translated_description": "Test instance hours month-to-date against individual EC2 instances","functions": null,"start_time": null},"topic":{"id": "usage","label": "Usage","policy_type": null},"granularity": "monthly","value": 1,"time": "is","abs": "abs","direction": "more","days": 1,"tag_conditions":[],"runlist_conditions":[],"password_policy":{},"duration": 30,"interval": "days","filters":[{"ref": "EC2-Instance-Type-Family","label": "Instance Type Families","members":[{"name": "c1","label": "c1"},{"name": "c3","label": "c3"}]}]}],"level": 30,"actions":[]}]}],"resource_type": "aws_ec2_instance","clear_suppressions": false},{"name": "Consider Upgrading To An I3 Instance","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "9:00 AM -0500","repeat_hour_interval": 4,"modified": true},"documentation": "Compared to I2 instances, I3 instances have over 4x higher I/O performance, over 2x higher disk throughput and 18% more SSD per CPU. I3 instances offer Non-Volatile Memory Express (NVMe) based SSDs offering lower disk latencies than I2. I3 offers the lowest price per read IOPS of all EC2 instances.","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "I2 Instances Running More Than 1 Hour This Month","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_instance_hrs_mtd","label": "Instance MTD Hours","source": "instant","cube_id": "0000","measure_id": "total_hours","unit": "hours","periods":["monthly"],"exclude_filters": null,"translated_description": "Test instance hours month-to-date against individual EC2 instances","functions": null,"start_time": null},"topic":{"id": "usage","label": "Usage","policy_type": null},"granularity": "monthly","value": 1,"time": "is","abs": "abs","direction": "more","days": 1,"tag_conditions":[],"runlist_conditions":[],"password_policy":{},"duration": 30,"interval": "days","filters":[{"ref": "EC2-Instance-Type-Family","label": "Instance Type Families","members":[{"name": "i2","label": "i2"}]}]}],"level": 30,"actions":[]}]}],"resource_type": "aws_ec2_instance","clear_suppressions": false},{"name": "Consider Upgrading To An R4 Instance","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "9:00 AM -0500","repeat_hour_interval": 4,"modified": true},"documentation": "The R4 family of instances provide a newer Intel Xeon processor, up to 488 GiB of RAM, are EBS optimized by default and support for Enhanced Networking with up to 25 Gbps offering lower latency, and low jitter. Plus, R4 provides a lower price point per GiB of RAM compared to the previous generation instances.","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "M2/CR1/R3 Instances Running More Than 1 Hour This Month","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_instance_hrs_mtd","label": "Instance MTD Hours","source": "instant","cube_id": "0000","measure_id": "total_hours","unit": "hours","periods":["monthly"],"exclude_filters": null,"translated_description": "Test instance hours month-to-date against individual EC2 instances","functions": null,"start_time": null},"topic":{"id": "usage","label": "Usage","policy_type": null},"granularity": "monthly","value": 1,"time": "is","abs": "abs","direction": "more","days": 1,"tag_conditions":[{"condition_type": "missing"}],"runlist_conditions":[],"password_policy":{},"duration": 30,"interval": "days","filters":[{"ref": "EC2-Instance-Type-Family","label": "Instance Type Families","members":[{"name": "m2","label": "m2"},{"name": "cr1","label": "cr1"},{"name": "r3","label": "r3"}]}]}],"level": 30,"actions":[]}]}],"resource_type": "aws_ec2_instance","clear_suppressions": false},{"name": "Consider Upgrading To A D2 Instance","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "9:00 AM -0500","repeat_hour_interval": 4,"modified": true},"documentation": "Powered by Xeon E5-2676 v3 (Haswell) processors, D2 instances offer more compute power and higher clock frequency, more than twice the memory, EC2 Enhanced Networking, and more storage options than compared to HS1 instances. The largest D2 instance, d2.8xlarge, offers up to 48 TB of instance storage and can deliver up to 3.5 GBps read and 3.1 GBps write disk throughput with a 2 MiB block size. D2 offers the lowest price per disk throughput of all Amazon EC2 instances.","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "HS1 Instances Running More Than 1 Hour This Month","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_instance_hrs_mtd","label": "Instance MTD Hours","source": "instant","cube_id": "0000","measure_id": "total_hours","unit": "hours","periods":["monthly"],"exclude_filters": null,"translated_description": "Test instance hours month-to-date against individual EC2 instances","functions": null,"start_time": null},"topic":{"id": "usage","label": "Usage","policy_type": null},"granularity": "monthly","value": 1,"time": "is","abs": "abs","direction": "more","days": 1,"tag_conditions":[],"runlist_conditions":[],"password_policy":{},"duration": 30,"interval": "days","filters":[{"ref": "EC2-Instance-Type-Family","label": "Instance Type Families","members":[{"name": "hs1","label": "hs1"}]}]}],"level": 30,"actions":[]}]}],"resource_type": "aws_ec2_instance","clear_suppressions": false},{"name": "Consider Upgrading To A G3 Instance","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "9:00 AM -0500","repeat_hour_interval": 4,"modified": true},"documentation": "G3 provides features not available on G2 such as multi-monitor support, H.265 (HEVC) encoding, enhanced graphics rendering effect, NVIDIA GRID Virtual Workstation features, and Enhanced Networking.\n\nCompared to G2 instances, G3 instances provide more powerful GPUs, faster processors, larger host memory, faster network, better EBS performance, and one additional instance size.","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "G2 Instances Running More Than 1 Hour This Month","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_instance_hrs_mtd","label": "Instance MTD Hours","source": "instant","cube_id": "0000","measure_id": "total_hours","unit": "hours","periods":["monthly"],"exclude_filters": null,"translated_description": "Test instance hours month-to-date against individual EC2 instances","functions": null,"start_time": null},"topic":{"id": "usage","label": "Usage","policy_type": null},"granularity": "monthly","value": 1,"time": "is","abs": "abs","direction": "more","days": 1,"tag_conditions":[],"runlist_conditions":[],"password_policy":{},"duration": 30,"interval": "days","filters":[{"ref": "EC2-Instance-Type-Family","label": "Instance Type Families","members":[{"name": "g2","label": "g2"}]}]}],"level": 30,"actions":[]}]}],"resource_type": "aws_ec2_instance","clear_suppressions": false},'
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateOgConsoleScript() {
+			  var awsOgInput = document.getElementById("awsOgCheck").value;
+			  	if (awsOgCheck.checked == true){
+			    awsOgString = awsOgJSON;
+			    } else {
+					    awsOgString = "";
+					};
+			  var mergedOgPayload = ogPayload.replace(/<ogClouds>/gi,awsOgString);
+			  var mergedNcOgPayload = mergedOgPayload.replace(/,],\"/,"],\"");
+			  var generatedOgConsoleScript = ogConsoleScript
+			  	.replace(/<ogPayload>/gi,mergedNcOgPayload);
+				document.getElementById("ogConsoleScriptTextBox").value = generatedOgConsoleScript;
+				copyOgConsoleScript();
+			};
+
+			function copyOgConsoleScript() {
+			  var copyOgConsoleText = document.getElementById("ogConsoleScriptTextBox");
+				copyOgConsoleText.select();
+				document.execCommand("copy");
+			  };
+		</script>
+	</div>
+
+	<div id="div13">
 		<h2>Instances In Unapproved Regions:</h2>
 		<p>Select the instance type you'd like to setup:</p>
 		<p><input type="checkbox" id="ec2IurCheck"> EC2 Instances</p>
@@ -1019,7 +1067,7 @@
 		</script>
 	</div>
 
-	<div id="div13">
+	<div id="div14">
 		<h2>Common Mining Instance Types:</h2>
 		<p>Select the clouds you'd like to setup:</p>
 		<p><input type="checkbox" id="awsCmiCheck"> AWS</p>
@@ -1063,7 +1111,51 @@
 		</script>
 	</div>
 
-	<div id="div14">
+	<div id="div15">
+		<h2>RegExp Examples:</h2>
+		<p>Select the clouds you'd like to setup:</p>
+		<p><input type="checkbox" id="awsExpCheck"> AWS</p>
+
+		<button onclick="generateExpConsoleScript()">Generate & Copy JSON To Clipboard</button>
+		<input type="text" id="expConsoleScriptTextBox">
+
+		<script>
+			const expConsoleScript = 'var payload = `<expPayload>`; var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content"); var xhr = new XMLHttpRequest(); xhr.open(\'POST\', \'https://apps.cloudhealthtech.com/policies/new.json\', false); xhr.setRequestHeader(\'Content-Type\', \'application/json\'); xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\'); xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token);   xhr.send(payload); console.log(xhr.response);'
+			const expPayload = '{"policy":{"name": ".RegExp Examples","description": "This is an example of how tagging conditions can extend beyond the extent of the dropdown via RegExp (Regular Expressions)","enabled": true,"version": 2,"filters":{},"policy_type": 0,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"blocks":[<expClouds>],"perspective":-1}}'
+			const awsExpJSON = '{"name": "Block 1","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"documentation": "","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "Example of tag with blank/no value","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]}]}],"resource_type": "aws_assets","clear_suppressions": false},{"name": "Block 2","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"documentation": "","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "Example of tag value that has a blank/space character","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^\\\\\\\\s*$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]}]}],"resource_type": "aws_assets","clear_suppressions": false},{"name": "Block 3","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"documentation": "","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "Example of tag value that starts with abc","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^abc"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that starts with a capitalized letter","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^[A-Z]"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that starts with a lowercase letter","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^[a-z]"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not start with abc","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "^abc"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not start with a capitalized letter","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "^[A-Z]"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not start with a lowercase letter","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "^[a-z]"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]}]}],"resource_type": "aws_assets","clear_suppressions": false},{"name": "Block 4","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"documentation": "","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "Example of tag value that ends with xyz","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "xyz$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not end with xyz","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "xyz$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]}]}],"resource_type": "aws_assets","clear_suppressions": false},{"name": "Block 5","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"documentation": "","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "Example of tag value that contains abc","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "abc"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that contains abc OR def","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "abc|def"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that contains capitalized letters","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "[A-Z]"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not contain abc","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "abc"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not contain abc OR def","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "abc|def"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not contain capitalized letters","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "[A-Z]"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]}]}],"resource_type": "aws_assets","clear_suppressions": false},{"name": "Block 6","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"documentation": "","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "Example of tag value that equals value abc","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^abc$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that equals yes or no","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^yes$|^no$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that equals Yes or No","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "^Yes$|^No$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not equal value abc","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "^abc$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not equal yes or no","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "^yes$|^no$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not equal Yes or No","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "^Yes$|^No$"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]}]}],"resource_type": "aws_assets","clear_suppressions": false},{"name": "Block 7","catchall": false,"enabled": true,"evaluation_interval":{"repeat": "daily","repeat_on_day": 1,"repeat_weekdays":[1],"repeat_time": "6:00 AM -0500","repeat_hour_interval": 4},"documentation": "","conditions":[],"filters":[],"groups":[],"scope":{"name": null,"label": "<none>"},"rule_groups":[{"name": "Rule Group 1","rules":[{"name": "Example of tag value that contains any numbers","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "\\\\\\\\d"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that contains any letters","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "pattern","tag": "Placeholder","value": "\\\\\\\\w"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not contain any numbers","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "\\\\\\\\d"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]},{"name": "Example of tag value that does not contain any letters","enabled": true,"conditions":[{"enabled": true,"measure":{"id": "instant_aws_assets_tag_policy","label": "Tags","source": "instant","cube_id": null,"measure_id": null,"unit": "","periods":["instant"],"exclude_filters": null,"translated_description": null,"functions": null,"start_time": null},"topic":{"id": "configuration","label": "Configuration","policy_type": null},"granularity": "instant","value": 1,"time": "is","abs": "abs","direction": "less","days": 1,"tag_conditions":[{"condition_type": "not_pattern","tag": "Placeholder","value": "\\\\\\\\w"}],"runlist_conditions":[],"password_policy":{},"filters":[]}],"level": 10,"actions":[]}]}],"resource_type": "aws_assets","clear_suppressions": false},'
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateExpConsoleScript() {
+			  var awsExpInput = document.getElementById("awsExpCheck").value;
+			  	if (awsExpCheck.checked == true){
+			    awsExpString = awsExpJSON;
+			    } else {
+					    awsExpString = "";
+					};
+			  var mergedExpPayload = expPayload.replace(/<expClouds>/gi,awsExpString);
+			  var mergedNcExpPayload = mergedExpPayload.replace(/,],\"/,"],\"");
+			  var generatedExpConsoleScript = expConsoleScript
+			  	.replace(/<expPayload>/gi,mergedNcExpPayload);
+				document.getElementById("expConsoleScriptTextBox").value = generatedExpConsoleScript;
+				copyExpConsoleScript();
+			};
+
+			function copyExpConsoleScript() {
+			  var copyExpConsoleText = document.getElementById("expConsoleScriptTextBox");
+				copyExpConsoleText.select();
+				document.execCommand("copy");
+			  };
+		</script>
+	</div>
+
+	<div id="div16">
 		<h2>List Of Taggable Assets:</h2>
 		<p>Select the account statuses you'd like to setup:</p>
 		<p><input type="checkbox" id="awsLoaCheck"> AWS Assets</p>
@@ -1131,7 +1223,7 @@
 		</script>
 	</div>
 
-	<div id="div15">
+	<div id="div17">
 		<h2>Anomaly Detection: <t id="red">(Intended For Use Only As Last Resort Against Competition)</t></h2>
 		<p>Select the cloud account you'd like to setup:</p>
 		<p><input type="checkbox" id="awsAdCheck"> AWS - Billing Statement</p>
@@ -1191,7 +1283,7 @@
 		</script>
 	</div>
 
-<div id="div16">
+<div id="div18">
 		<h2>Untagged AWS Assets (By Resource Group):</h2>
 		<p>Check the boxes & click the "Generate JSON" button:</p>
 		<p><input type="checkbox" id="awsUbrtCheck"> AWS</p>
@@ -1224,6 +1316,43 @@
 			function copyUbrtConsoleScript() {
 			  var copyUbrtConsoleText = document.getElementById("ubrtConsoleScriptTextBox");
 				copyUbrtConsoleText.select();
+				document.execCommand("copy");
+			};
+		</script>
+	</div>
+
+<div id="div19">
+		<h2>Blank Policy (For Testing):</h2>
+		<br>
+		<input hidden="true" type="checkbox" id="awsBlankCheck">
+		<button onclick="generateBlankConsoleScript()">Generate & Copy JSON To Clipboard</button>
+		<input type="text" id="blankConsoleScriptTextBox">
+		<script>
+			const awsBlankJSON = 'var payload = ``;  var csrf_token = document.querySelector(\'meta[name = "csrf-token"]\').getAttribute("content");  var xhr = new XMLHttpRequest();  xhr.open(\'POST\', \'https://apps.cloudhealthtech.com/policies/new.json\', false);  xhr.setRequestHeader(\'Content-Type\', \'application/json\');  xhr.setRequestHeader(\'Accept\', \'application/json, text/plain, */*\');  xhr.setRequestHeader(\'X-XSRF-TOKEN\', csrf_token);  xhr.send(payload);  console.log(xhr.response); '
+
+			function createNode(element) {
+			  return document.createElement(element);
+			}
+
+			function append(parent, el) {
+			  return parent.appendChild(el);
+			}
+
+			function generateBlankConsoleScript() {
+			  var awsBlankInput = document.getElementById("awsBlankCheck").value;
+			  	if (awsBlankCheck.checked == true){
+			    awsBlankString = awsBlankJSON;
+			    } else {
+					    awsBlankString = "";
+					};
+
+			  	document.getElementById("blankConsoleScriptTextBox").value = awsBlankJSON;
+			  	copyBlankConsoleScript();
+				}
+
+			function copyBlankConsoleScript() {
+			  var copyBlankConsoleText = document.getElementById("blankConsoleScriptTextBox");
+				copyBlankConsoleText.select();
 				document.execCommand("copy");
 			};
 		</script>
@@ -1269,7 +1398,7 @@
 			  font-family: Metropolis,"Avenir Next","Helvetica Neue",Arial,sans-serif;
 			}
 
-			#margin, #scriptSelectionBar, #div1, #div2, #div3, #div4,#div5,#div6,#div7,#div8,#div9,#div10,#div11,#div12,#div13,#div14,#div15,#div16 {
+			#margin, #scriptSelectionBar, #div1, #div2, #div3, #div4,#div5,#div6,#div7,#div8,#div9,#div10,#div11,#div12,#div13,#div14,#div15,#div16,#div17,#div18,#div19 {
 			  margin-left: 20px;
 			}
 
@@ -1301,7 +1430,7 @@
 				color: ff0000;
 			}
 
-			#div1,#div2,#div3,#div4,#div5,#div6,#div7,#div8,#div9,#div10,#div11,#div12,#div13,#div14,#div15,#div16 {
+			#div1,#div2,#div3,#div4,#div5,#div6,#div7,#div8,#div9,#div10,#div11,#div12,#div13,#div14,#div15,#div16,#div17,#div18,#div19 {
 				display: none
 			}
 
