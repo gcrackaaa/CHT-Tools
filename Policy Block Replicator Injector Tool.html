@@ -57,11 +57,27 @@
 
 		  var newPolicyText = tempPolicyText.repeat(policyNumTextBox.value);
 
-		  var finalPolicyText = document.getElementById("originalPolicyTextBox").value.replace('],"perspective',newPolicyText + '],"perspective');
+		  var finalPolicyText = document.getElementById("originalPolicyTextBox").value
+		  .replace('],          "perspective"','],"perspective"')
+		  .replace('],         "perspective"','],"perspective"')
+		  .replace('],        "perspective"','],"perspective"')
+		  .replace('],       "perspective"','],"perspective"')
+		  .replace('],      "perspective"','],"perspective"')
+		  .replace('],     "perspective"','],"perspective"')
+		  .replace('],    "perspective"','],"perspective"')
+		  .replace('],   "perspective"','],"perspective"')
+		  .replace('],  "perspective"','],"perspective"')
+		  .replace('], "perspective"','],"perspective"')
+		  .replace('],					"perspective"','],"perspective"')
+		  .replace('],				"perspective"','],"perspective"')
+		  .replace('],			"perspective"','],"perspective"')
+		  .replace('],		"perspective"','],"perspective"')
+		  .replace('],	"perspective"','],"perspective"')
+		  .replace('],"perspective"',newPolicyText + '],"perspective"');
+
+		  console.log(finalPolicyText)
 
 		  var xhrFinalPolicyText = xhrScript.replace('<policyPayload>',finalPolicyText);
-
-		  console.log(xhrFinalPolicyText)
 
 		  document.getElementById("policyConsoleScriptTextBox").value = xhrFinalPolicyText;
 				copyPolicyConsoleScript();
