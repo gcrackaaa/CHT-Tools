@@ -75,8 +75,6 @@
 		  .replace('],	"perspective"','],"perspective"')
 		  .replace('],"perspective"',newPolicyText + '],"perspective"');
 
-		  console.log(finalPolicyText)
-
 		  var xhrFinalPolicyText = xhrScript.replace('<policyPayload>',finalPolicyText);
 
 		  document.getElementById("policyConsoleScriptTextBox").value = xhrFinalPolicyText;
